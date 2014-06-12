@@ -16,6 +16,7 @@ In R:
 
 	install.packages('rgdal')
 
+To run the scripts, please set the environment variables CARTODB_API_KEY and CARTODB_DOMAIN. (Hint: Use virtualenv's postactivate and postdeactivate hooks.)
 
 
 Package to read netCDF files
