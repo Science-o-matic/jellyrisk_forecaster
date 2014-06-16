@@ -9,7 +9,7 @@ from subprocess import call
 
 from cartodb import CartoDBAPIKey, CartoDBException
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 API_KEY = os.environ.get("CARTODB_API_KEY")
 DOMAIN = os.environ.get("CARTODB_DOMAIN")
 
@@ -33,6 +33,7 @@ def initialize():
 ### 1. Call R script
 
 def calibrate_predict():
+    os.chdir(TEMPFOLDER)
     with open(os.path.join(BASE_DIR, 'R/GuloGulo_calibrate_predict.R'), 'r') as inputfile:
         call(["R", "--no-save"], stdin=inputfile)
 

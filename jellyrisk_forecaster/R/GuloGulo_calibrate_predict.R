@@ -4,8 +4,6 @@
 ### 1: Load options and data
 ###################################################
 
-setwd("tmp")
-
 options(prompt = " ", continue = "  ", width = 60, digits=4)
 .CurFileName <- "biomod2_getting_started"
 # .PrefixName <- strsplit(.CurFileName, "\\.")[[1]][1]
