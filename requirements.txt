@@ -1,5 +1,11 @@
+amqp==1.4.5
+anyjson==0.3.3
 argparse==1.2.1
+billiard==3.3.0.17
 cartodb==0.8.1
+celery==3.1.12
 httplib2==0.9
+kombu==3.0.19
 oauth2==1.5.211
+pytz==2014.4
 wsgiref==0.1.2
