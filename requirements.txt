@@ -8,4 +8,5 @@ httplib2==0.9
 kombu==3.0.19
 oauth2==1.5.211
 pytz==2014.4
+redis==2.10.1
 wsgiref==0.1.2
