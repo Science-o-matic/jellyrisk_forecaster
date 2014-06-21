@@ -69,10 +69,12 @@ def insert_data(query):
 ### -1: Clean up
 
 def cleanup():
-    shutil.rmtree(settings.TEMP_FOLDER)
+    if os.path.exists(settings.TEMP_FOLDER):
+        shutil.rmtree(settings.TEMP_FOLDER)
 
 
 def main():
+    cleanup()
     initialize()
     calibrate_predict()
     query = construct_query()
