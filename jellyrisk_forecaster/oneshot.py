@@ -12,7 +12,7 @@ from cartodb import CartoDBAPIKey, CartoDBException
 from jellyrisk_forecaster.config import settings
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-
+LIMIT_ROWS = getattr(settings, 'SETTINGS_LIMIT_ROWS', 15000)
 
 def quote(value):
     return "'%s'" % value
@@ -37,7 +37,7 @@ def calibrate_predict():
 
 ### 2. Open resulting CSV file and construct query
 
-def construct_query():
+def construct_query(limit_rows=LIMIT_ROWS):
     values = []
 
     with open(os.path.join(settings.TEMP_FOLDER, 'Pelagia.NoctilucaEF.csv'), 'r') as csvfile:
@@ -49,7 +49,7 @@ def construct_query():
     query = """
         INSERT INTO pred_pelagia (lon, lat, prob)
         VALUES %s;
-        """ % ', '.join(values)
+        """ % ', '.join(values[:limit_rows])
 
     return query
 
