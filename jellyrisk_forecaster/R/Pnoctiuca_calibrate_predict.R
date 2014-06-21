@@ -131,7 +131,7 @@ em.ca       <- ef.out[,"Pelagia.noctiluca_TotalConsensus_TSS_EMmedian"] / 1000
 data <- data.frame(
   lon=x.ensmod.sp,
   lat=y.ensmod.sp,
-  prob=z.ensmod.sp
+  prob=probability
 )
 
 write.csv(data, file="Pelagia.NoctilucaEF.csv", row.names=FALSE)
