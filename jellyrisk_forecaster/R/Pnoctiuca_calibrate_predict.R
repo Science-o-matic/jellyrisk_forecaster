@@ -77,7 +77,7 @@ myBiomodEM.pn <- BIOMOD_EnsembleModeling(
 ###################################################
 
 #Load the new environmental data
-Env.sp <- read.table("data/Env.points.Spain.txt", header=T, dec=".")
+Env.sp <- read.table("data/Env.points.Catalonia.txt", header=T, dec=".")
 
 # vuelvo a quitar lo NA's
 I1 <- is.na(Env.sp$Long) | is.na(Env.sp$lat) | is.na(Env.sp$Salinity) | is.na(Env.sp$sstmax) | is.na(Env.sp$nitrate) | is.na(Env.sp$dissox) | is.na(Env.sp$chlomax) | is.na(Env.sp$phosphate)
@@ -93,7 +93,7 @@ myBiomodProj.sp.pn <- BIOMOD_Projection(
                         modeling.output = myBiomodModelOut.pn,
                         new.env = myExpl.sp,
                         xy.new.env = myRespXY.sp,
-                        proj.name = 'Spain',
+                        proj.name = 'Catalonia',
                         selected.models = "all",
                         binary.meth = 'TSS',
                         compress = 'xz',
@@ -113,7 +113,7 @@ myBiomodEF.pn.sp <- BIOMOD_EnsembleForecasting(
                       binary.meth = 'TSS')
 
 #Cargamos las proyecciones
-p.nocti.ensfore.sp <- load('Pelagia.noctiluca/proj_Spain/proj_Spain_Pelagia.noctiluca_ensemble.RData')
+p.nocti.ensfore.sp <- load('Pelagia.noctiluca/proj_Catalonia/proj_Catalonia_Pelagia.noctiluca_ensemble.RData')
 
 x.ensmod.sp <- myRespXY.sp$Long
 y.ensmod.sp <- myRespXY.sp$lat
