@@ -31,7 +31,7 @@ def initialize():
 
 def calibrate_predict():
     os.chdir(settings.TEMP_FOLDER)
-    with open(os.path.join(BASE_DIR, 'R/GuloGulo_calibrate_predict.R'), 'r') as inputfile:
+    with open(os.path.join(BASE_DIR, 'R/Pnoctiuca_calibrate_predict.R'), 'r') as inputfile:
         call(["R", "--no-save"], stdin=inputfile)
 
 
@@ -40,14 +40,14 @@ def calibrate_predict():
 def construct_query():
     values = []
 
-    with open(os.path.join(settings.TEMP_FOLDER, 'GuloGuloEF.csv'), 'r') as csvfile:
+    with open(os.path.join(settings.TEMP_FOLDER, 'Pelagia.NoctilucaEF.csv'), 'r') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             value = ','.join([row['lon'], row['lat'], row['prob']])
             values.append('(' + value + ')')
 
     query = """
-        INSERT INTO guloguloout (lon, lat, prob) 
+        INSERT INTO pred_pelagia (lon, lat, prob)
         VALUES %s;
         """ % ', '.join(values)
 

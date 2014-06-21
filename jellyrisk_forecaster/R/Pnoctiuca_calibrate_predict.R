@@ -7,7 +7,7 @@
 library("biomod2")
 
 #Load the presence of the species
-DataSpecies <- read.table("Acum.Env.ACA.txt", header=T, dec=",")
+DataSpecies <- read.table("data/Acum.Env.ACA.txt", header=T, dec=",")
 
 myRespName.pn <- "Pelagia.noctiluca"
 
@@ -77,7 +77,7 @@ myBiomodEM.pn <- BIOMOD_EnsembleModeling(
 ###################################################
 
 #Load the new environmental data
-Env.sp <- read.table("Env.points.Spain.txt", header=T, dec=".")
+Env.sp <- read.table("data/Env.points.Spain.txt", header=T, dec=".")
 
 # vuelvo a quitar lo NA's
 I1 <- is.na(Env.sp$Long) | is.na(Env.sp$lat) | is.na(Env.sp$Salinity) | is.na(Env.sp$sstmax) | is.na(Env.sp$nitrate) | is.na(Env.sp$dissox) | is.na(Env.sp$chlomax) | is.na(Env.sp$phosphate)
