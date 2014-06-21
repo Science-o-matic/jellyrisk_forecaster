@@ -12,7 +12,6 @@ from cartodb import CartoDBAPIKey, CartoDBException
 from jellyrisk_forecaster.config import settings
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-TEMPFOLDER = os.path.join(BASE_DIR, 'tmp')
 
 
 def quote(value):
@@ -20,17 +19,18 @@ def quote(value):
 
 
 
-### 0. create temporal folder for the R script output files
+### 0. create temporal folder for the R script output files and copy data to it
 
 def initialize():
-    if not os.path.exists(TEMPFOLDER):
-        os.makedirs(TEMPFOLDER)
+    if not os.path.exists(settings.TEMP_FOLDER):
+        os.makedirs(settings.TEMP_FOLDER)
+    shutil.copytree(settings.DATA_FOLDER, os.path.join(settings.TEMP_FOLDER, 'data'))
 
 
 ### 1. Call R script
 
 def calibrate_predict():
-    os.chdir(TEMPFOLDER)
+    os.chdir(settings.TEMP_FOLDER)
     with open(os.path.join(BASE_DIR, 'R/GuloGulo_calibrate_predict.R'), 'r') as inputfile:
         call(["R", "--no-save"], stdin=inputfile)
 
@@ -40,7 +40,7 @@ def calibrate_predict():
 def construct_query():
     values = []
 
-    with open(os.path.join(TEMPFOLDER, 'GuloGuloEF.csv'), 'r') as csvfile:
+    with open(os.path.join(settings.TEMP_FOLDER, 'GuloGuloEF.csv'), 'r') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             value = ','.join([row['lon'], row['lat'], row['prob']])
@@ -69,7 +69,7 @@ def insert_data(query):
 ### -1: Clean up
 
 def cleanup():
-    shutil.rmtree(TEMPFOLDER)
+    shutil.rmtree(settings.TEMP_FOLDER)
 
 
 def main():

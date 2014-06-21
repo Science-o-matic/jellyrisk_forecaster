@@ -19,6 +19,8 @@ In R:
 To run the scripts, please set the environment variable JELLYRISK_SETTINGS_MODULE pointing to an accessible Python module with all the settings set:
  * CARTODB_API_KEY
  * CARTODB_DOMAIN
+ * TEMP_FOLDER: folder to chdir to before executing the R script
+ * DATA_FOLDER: folder with data files
  * Any celery-related config var. `app.config_from_object(JELLYRISK_SETTINGS_MODULE)' will be invoked.
 
 Hint: Use virtualenv's postactivate and postdeactivate hooks.
