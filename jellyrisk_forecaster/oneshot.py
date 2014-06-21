@@ -9,14 +9,11 @@ from subprocess import call
 
 from cartodb import CartoDBAPIKey, CartoDBException
 
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-API_KEY = os.environ.get("CARTODB_API_KEY")
-DOMAIN = os.environ.get("CARTODB_DOMAIN")
+from jellyrisk_forecaster.config import settings
 
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 TEMPFOLDER = os.path.join(BASE_DIR, 'tmp')
 
-if not API_KEY or not DOMAIN:
-    raise EnvironmentError('Please set both CARTODB_API_KEY and CARTODB_DOMAIN environment variables.')
 
 def quote(value):
     return "'%s'" % value
@@ -60,7 +57,7 @@ def construct_query():
 ### 3. Connect to CartoDB and insert data
 
 def insert_data(query):
-    cl = CartoDBAPIKey(API_KEY, DOMAIN)
+    cl = CartoDBAPIKey(settings.CARTODB_API_KEY, settings.CARTODB_DOMAIN)
 
     try:
        print cl.sql(query)
