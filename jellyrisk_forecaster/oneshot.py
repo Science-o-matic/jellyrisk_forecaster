@@ -31,7 +31,7 @@ def initialize():
 
 def calibrate_predict():
     os.chdir(settings.TEMP_FOLDER)
-    with open(os.path.join(BASE_DIR, 'R/Pnoctiuca_calibrate_predict.R'), 'r') as inputfile:
+    with open(os.path.join(BASE_DIR, 'R/Pnoctiuca_myocean_calibrate_predict.R'), 'r') as inputfile:
         call(["R", "--no-save"], stdin=inputfile)
 
 
