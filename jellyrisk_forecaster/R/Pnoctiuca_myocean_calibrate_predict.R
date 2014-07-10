@@ -7,7 +7,7 @@
 library("biomod2")
 
 #Load the presence of the species
-DataSpecies <- read.table("data/Acum.Env.ACA.txt", header=T, dec=",")
+DataSpecies <- read.table("Presence/Presences.csv", header=T, sep='\t')
 
 myRespName.pn <- "Pelagia.noctiluca"
 
@@ -15,10 +15,12 @@ myRespName.pn <- "Pelagia.noctiluca"
 myResp.pn <- as.numeric(DataSpecies[,myRespName.pn])
 
 # the XY coordinates of species data
-myRespXY <- DataSpecies[,c("Long","lat")]
+myRespXY <- DataSpecies[,c("lon","lat")]
 
 # Environmental variables
-myExpl <- DataSpecies[,c("Salinity","sstmax","nitrate", "chlomax", "phosphate")]
+EnvVars <- read.table("BioOracle/Env.Points.Beaches.csv", header=T, sep='\t')
+explVars <- c("sal","sstmean","nit", "chlomean", "pho")
+myExpl <- EnvVars[, explVars]
 
 # Formateando para Biomod
 myBiomodData.pn <- BIOMOD_FormatingData(resp.var = myResp.pn,
@@ -77,17 +79,17 @@ myBiomodEM.pn <- BIOMOD_EnsembleModeling(
 ###################################################
 
 #Load the new environmental data
-Env.sp <- read.table("data/predictionData.txt", header=T, dec=".")
+Env.sp <- read.table("MyOcean/predictionData.csv", header=T, dec=".")
 
 # vuelvo a quitar lo NA's
-I1 <- is.na(Env.sp$lon) | is.na(Env.sp$lat) | is.na(Env.sp$Salinity) | is.na(Env.sp$sstmax) | is.na(Env.sp$nitrate) | is.na(Env.sp$chlomax) | is.na(Env.sp$phosphate)
+I1 <- is.na(Env.sp$lon) | is.na(Env.sp$lat) | is.na(Env.sp$sal) | is.na(Env.sp$sstmean) | is.na(Env.sp$nit) | is.na(Env.sp$chlomean) | is.na(Env.sp$pho)
 Env.sp <- Env.sp[!I1, ]
 
 # the XY coordinates of species data
 myRespXY.sp <- Env.sp[,c("lon","lat")]
 
 # Environmental variables
-myExpl.sp <- Env.sp[,c("Salinity","sstmax","nitrate", "chlomax", "phosphate")]
+myExpl.sp <- Env.sp[, explVars]
 
 myBiomodProj.sp.pn <- BIOMOD_Projection(
                         modeling.output = myBiomodModelOut.pn,
