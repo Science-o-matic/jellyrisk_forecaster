@@ -17,7 +17,7 @@ ymax <- 44
 e <- extent(xmin, xmax, ymin, ymax)
 
 rasterSalinity.cropped <- crop(rasterSalinity, e)
-rasterTemperature.cropped <- crop(rasterSalinity, e)
+rasterTemperature.cropped <- crop(rasterTemperature, e)
 rasterNitrate.cropped <- crop(rasterNitrate, e)
 rasterChlorofile.cropped <- crop(rasterChlorofile, e)
 rasterPhosphate.cropped <- crop(rasterPhosphate, e)
