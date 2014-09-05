@@ -52,10 +52,10 @@ phosphate.points <- extract(x=rasterPhosphate.imputed, y=xy, method="bilinear")
 data <- data.frame(
   lon = xy$lon[!is.na(salinity.points)],
   lat = xy$lat[!is.na(salinity.points)],
-  sal = salinity.points[!is.na(salinity.points)],
+  salinity = salinity.points[!is.na(salinity.points)],
   temperature = temperature.points[!is.na(temperature.points)],
   nit = nitrate.points[!is.na(nitrate.points)],
-  chlomean = chlorofile.points[!is.na(chlorofile.points)],
+  chlorophile = chlorofile.points[!is.na(chlorofile.points)],
   pho = phosphate.points[!is.na(phosphate.points)]
 )
 

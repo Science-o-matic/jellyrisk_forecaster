@@ -19,8 +19,8 @@ myResp.pn <- as.numeric(historical_data[,myRespName.pn])
 myRespXY <- historical_data[,c("lon","lat")]
 
 # Environmental variables
-explVars <- c("temperature")  # c("sal","sstmean","nit", "chlomean", "pho")
-myExpl <- data.frame(temperature=historical_data$temperature)# historical_data[, explVars]
+explVars <- c("temperature", "salinity", "chlorophile")  # c("sal","sstmean","nit", "chlomean", "pho")
+myExpl <- historical_data[, explVars] # data.frame(temperature=historical_data$temperature)
 
 # Formateando para Biomod
 myBiomodData.pn <- BIOMOD_FormatingData(resp.var = myResp.pn,
@@ -65,7 +65,7 @@ myBiomodEM.pn <- BIOMOD_EnsembleModeling(
                   chosen.models = 'all',
                   em.by='all',
                   eval.metric = c('TSS'),
-                  eval.metric.quality.threshold = c(0.3),  # XXX: Too low, should increase with more vars
+                  eval.metric.quality.threshold = c(0.4),
                   prob.mean = T,
                   prob.cv = T,
                   prob.ci = T,
@@ -84,14 +84,14 @@ myBiomodEM.pn <- BIOMOD_EnsembleModeling(
 Env.sp <- read.table("MyOcean/predictionData.csv", header=T, dec=".")
 
 # vuelvo a quitar lo NA's
-I1 <- is.na(Env.sp$lon) | is.na(Env.sp$lat) | is.na(Env.sp$sal) | is.na(Env.sp$temperature) | is.na(Env.sp$nit) | is.na(Env.sp$chlomean) | is.na(Env.sp$pho)
+I1 <- is.na(Env.sp$lon) | is.na(Env.sp$lat) | is.na(Env.sp$sal) | is.na(Env.sp$temperature) | is.na(Env.sp$nit) | is.na(Env.sp$chlorophile) | is.na(Env.sp$pho)
 Env.sp <- Env.sp[!I1, ]
 
 # the XY coordinates of species data
 myRespXY.sp <- Env.sp[,c("lon","lat")]
 
 # Environmental variables
-myExpl.sp <- data.frame(temperature=Env.sp$temperature)# Env.sp[, explVars]
+myExpl.sp <- Env.sp[, explVars] # data.frame(temperature=Env.sp$temperature)
 
 myBiomodProj.sp.pn <- BIOMOD_Projection(
                         modeling.output = myBiomodModelOut.pn,

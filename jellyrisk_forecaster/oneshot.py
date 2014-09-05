@@ -42,10 +42,10 @@ def download_data():
             '-m', 'http://gnoodap.bo.ingv.it/mis-gateway-servlet/Motu',
             '-s', service,
             '-d', product,
-            '-x', '-6',
-            '-X', '36.25',
-            '-y', '30.1875',
-            '-Y', '45.9375',
+            '-x', '-2',
+            '-X', '4',
+            '-y', '38',
+            '-Y', '44',
             '-t', '%s %s' % (start, time),
             '-T', '%s %s' % (end, time),
             '-z', '1.4721',
@@ -91,7 +91,7 @@ def construct_query(limit_rows=LIMIT_ROWS):
             values.append('(' + value + ')')
 
     query = """
-        INSERT INTO pred_pelagia (lon, lat, prob)
+        INSERT INTO pred_pelagia_temperature_salinity_chlorophile (lon, lat, prob)
         VALUES %s;
         """ % ', '.join(values[:limit_rows])
 
