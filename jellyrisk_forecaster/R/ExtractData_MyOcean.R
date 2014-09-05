@@ -25,11 +25,11 @@ imputeKNN <- function(raster_layer) {
 
 # load the data in raster layers
 
-rasterSalinity <- raster('MyOcean/myov04-med-ingv-sal-an-fc.nc')
+rasterSalinity <- raster('MyOcean/myov04-med-ingv-sal-an-fc.nc', level=1)
 rasterTemperature <- raster('MyOcean/myov04-med-ingv-tem-an-fc.nc', level=1)
-rasterNitrate <- raster('MyOcean/myov04-med-ogs-bio-an-fc.nc', varname='nit')
-rasterChlorofile <- raster('MyOcean/myov04-med-ogs-bio-an-fc.nc', varname='chl')
-rasterPhosphate <- raster('MyOcean/myov04-med-ogs-bio-an-fc.nc', varname='pho')
+rasterNitrate <- raster('MyOcean/myov04-med-ogs-bio-an-fc.nc', varname='nit', level=1)
+rasterChlorofile <- raster('MyOcean/myov04-med-ogs-bio-an-fc.nc', varname='chl', level=1)
+rasterPhosphate <- raster('MyOcean/myov04-med-ogs-bio-an-fc.nc', varname='pho', level=1)
 
 rasterSalinity.imputed <- imputeKNN(rasterSalinity)
 rasterTemperature.imputed <- imputeKNN(rasterTemperature)

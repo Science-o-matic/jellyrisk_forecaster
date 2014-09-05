@@ -31,7 +31,7 @@ imputeKNN <- function(raster_layer) {
 brickTemperature <- brick('./MyOcean/myov04-med-ingv-tem-rean-mm_2007-2010.nc', level=1)
 brickSalinity <- brick('./MyOcean/myov04-med-ingv-sal-rean-mm_2007-2010.nc', level=1)
 # MEDSEA_REANALYSIS_BIO_006_007
-brickChlorophile <- brick('./MyOcean/myov04-med-ogs-bio-rean_2007-2010.nc', varname=chl, level=1)
+brickChlorophile <- brick('./MyOcean/myov04-med-ogs-bio-rean_2007-2010.nc', varname='chl', level=1)
 
 
 # table with equivalences between layer number, month and year in previous file
