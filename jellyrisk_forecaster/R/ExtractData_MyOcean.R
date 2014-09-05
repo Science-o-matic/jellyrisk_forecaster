@@ -53,7 +53,7 @@ data <- data.frame(
   lon = xy$lon[!is.na(salinity.points)],
   lat = xy$lat[!is.na(salinity.points)],
   sal = salinity.points[!is.na(salinity.points)],
-  sstmean = temperature.points[!is.na(temperature.points)],
+  temperature = temperature.points[!is.na(temperature.points)],
   nit = nitrate.points[!is.na(nitrate.points)],
   chlomean = chlorofile.points[!is.na(chlorofile.points)],
   pho = phosphate.points[!is.na(phosphate.points)]

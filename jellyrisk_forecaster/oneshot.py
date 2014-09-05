@@ -57,15 +57,15 @@ def download_data():
 
 # Extract varaibles data from MyOcean using R
 
-def extract_data_biooracle():
+def compile_historical_data():
     os.chdir(os.path.join(settings.DATA_FOLDER))
-    with open(os.path.join(BASE_DIR, 'R', 'ExtractData_BioOracle.R'), 'r') as inputfile:
+    with open(os.path.join(BASE_DIR, 'R', 'Compile_historical_data.R'), 'r') as inputfile:
         call(["R", "--no-save"], stdin=inputfile)
 
 
-# Extract varaibles data from MyOcean using R
+# Extract prediction environmental data from MyOcean using R
 
-def extract_data_myocean():
+def extract_prediction_data():
     os.chdir(os.path.join(settings.DATA_FOLDER))
     with open(os.path.join(BASE_DIR, 'R', 'ExtractData_MyOcean.R'), 'r') as inputfile:
         call(["R", "--no-save"], stdin=inputfile)
@@ -104,19 +104,16 @@ def insert_data(query):
     cl = CartoDBAPIKey(settings.CARTODB_API_KEY, settings.CARTODB_DOMAIN)
 
     try:
-        print cl.sql(query)
+        print(cl.sql(query))
     except CartoDBException as e:
-        print ("some error ocurred", e)
+        print("some error ocurred", e)
         raise
-
-
-
 
 
 def main():
     download_data()
-    extract_data_biooracle()
-    extract_data_myocean()
+    compile_historical_data()
+    extract_prediction_data()
     calibrate_predict()
     query = construct_query()
     insert_data(query)
