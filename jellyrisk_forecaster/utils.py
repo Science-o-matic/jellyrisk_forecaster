@@ -4,6 +4,11 @@ from subprocess import call
 from jellyrisk_forecaster.config import settings
 
 
+def exists(filename, folder):
+    """Return true if file with the given name exists in the folder."""
+    return os.path.exists(os.path.join(folder, filename))
+
+
 def download_myocean_data(service, product,
                           time_start, time_end,
                           folder=None,
@@ -29,8 +34,8 @@ def download_myocean_data(service, product,
         '-y', lat_min, '-Y', lat_max,
         '-z', depth_min, '-Z', depth_max,
         '-t', time_start, '-T', time_end,
-        '-o', os.path.join(settings.DATA_FOLDER, 'MyOcean'),
-        '-f', '%s.nc' % product
+        '-o', folder,
+        '-f', filename
     ]
     if variables:
         for variable in variables:

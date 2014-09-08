@@ -7,7 +7,7 @@
 library("biomod2")
 
 # Load the historical data
-historical_data <- read.table('historical-data-by-beach-2007-2010.csv', header=T)
+historical_data <- read.table('./MyOcean/Historical/historical-data-by-beach-2007-2010.csv', header=T)
 
 # Species names
 myRespName.pn <- c("Pelagia")

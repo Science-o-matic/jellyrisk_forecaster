@@ -1,25 +1,40 @@
 import os
 import csv
+from datetime import date, timedelta
 
 from cartodb import CartoDBAPIKey, CartoDBException
 
 from jellyrisk_forecaster.config import settings
 
 
-def construct_query(limit_rows=settings.LIMIT_ROWS):
-    values = []
+def single_quote(value):
+    return "'%s'" % value
 
-    with open(os.path.join(settings.DATA_FOLDER, 'Pelagia.NoctilucaEF.csv'), 'r') as csvfile:
+
+def truncate_table(table):
+    query = 'TRUNCATE %s' % table
+    cl = CartoDBAPIKey(settings.CARTODB_API_KEY, settings.CARTODB_DOMAIN)
+    cl.sql(query)
+
+
+def construct_query(target_date, limit_rows=settings.LIMIT_ROWS):
+    values = []
+    folder = os.path.join(settings.DATA_FOLDER, 'Projections')
+    filename = 'PelagiaNoctilucaEF-%s.csv' % target_date.strftime('%Y-%m-%d')
+
+    with open(os.path.join(folder, filename), 'r') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            value = ','.join([row['lon'], row['lat'], row['prob']])
+            lon = row['lon']
+            lat = row['lat']
+            prob = row['prob']
+            date = row['date']
+            the_geom = 'ST_SetSRID(ST_Point(%s, %s),4326)' % (lon, lat)
+            value = ', '.join([lon, lat, prob, single_quote(date), the_geom])
             values.append('(' + value + ')')
 
-    query = """
-        INSERT INTO pred_pelagia_temperature_salinity_chlorophile (lon, lat, prob)
-        VALUES %s;
-        """ % ', '.join(values[:limit_rows])
-
+    query = 'INSERT INTO %s (lon, lat, prob, date, the_geom) VALUES %s;'  \
+            % (settings.CARTODB_TABLE, ', '.join(values[:limit_rows]))
     return query
 
 
@@ -34,9 +49,17 @@ def insert_data(query):
         raise
 
 
-def plot():
-    query = construct_query()
-    insert_data(query)
+def plot(days_ahead=2, truncate=True):
+    if truncate:
+        truncate_table(settings.CARTODB_TABLE)
+
+    today = date.today()
+    target_dates = [today + timedelta(days=days) for days in range(1, days_ahead + 1)]
+
+    for target_date in target_dates:
+        print("\n=== Plotting for date %s... ===" % target_date)
+        query = construct_query(target_date)
+        insert_data(query)
 
 
 if __name__ == "__main__":

@@ -7,7 +7,10 @@ from jellyrisk_forecaster.predict import predict
 from jellyrisk_forecaster.plot import plot
 
 
-if __name__ == "__main__":
+def main():
     calibrate()
-    predict()
-    plot()
+    predict(days_ahead=2)
+    plot(days_ahead=2)
+
+if __name__ == "__main__":
+    main()

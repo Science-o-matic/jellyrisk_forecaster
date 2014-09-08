@@ -1,16 +1,22 @@
 ### Encoding: UTF-8
 
+target_date <- commandArgs(trailingOnly=TRUE)[1]
+
 library("biomod2")
 
 # read model data
 load(file='Pnoctiluca_model.R')
+
 
 ###################################################
 ### Projection Over the Spanish Coast
 ###################################################
 
 # Load the new environmental data
-Env.sp <- read.table("MyOcean/predictionData.csv", header=T, dec=".")
+Env.sp <- read.table(
+  sprintf("./MyOcean/Forecast/Forecast_Env-%s.csv", target_date),
+  header=T, dec="."
+)
 
 # vuelvo a quitar lo NA's
 I1 <- is.na(Env.sp$lon) | is.na(Env.sp$lat) | is.na(Env.sp$sal) | is.na(Env.sp$temperature) | is.na(Env.sp$nit) | is.na(Env.sp$chlorophile) | is.na(Env.sp$pho)
@@ -22,11 +28,12 @@ myRespXY.sp <- Env.sp[,c("lon","lat")]
 # Environmental variables
 myExpl.sp <- Env.sp[, explVars] # data.frame(temperature=Env.sp$temperature)
 
+proj.name <- sprintf('Catalonia-%s', target_date)
 myBiomodProj.sp.pn <- BIOMOD_Projection(
                         modeling.output = myBiomodModelOut.pn,
                         new.env = myExpl.sp,
                         xy.new.env = myRespXY.sp,
-                        proj.name = 'Catalonia',
+                        proj.name = proj.name,
                         selected.models = "all",
                         binary.meth = 'TSS',
                         compress = 'xz',
@@ -45,9 +52,10 @@ myBiomodEF.pn.sp <- BIOMOD_EnsembleForecasting(
                       EM.output = myBiomodEM.pn,
                       binary.meth = 'TSS')
 
-#Cargamos las proyecciones
-p.nocti.ensfore.sp <- load('Pelagia/proj_Catalonia/proj_Catalonia_Pelagia_ensemble.RData')
-
+# Load projections from disk
+p.nocti.ensfore.sp <- load(
+  sprintf('Pelagia/proj_%s/proj_%s_Pelagia_ensemble.RData', proj.name, proj.name)
+)
 x.ensmod.sp <- myRespXY.sp$lon
 y.ensmod.sp <- myRespXY.sp$lat
 z.ensmod.sp <- ef.out[,"Pelagia_TotalConsensus_TSS_EMmean"]
@@ -64,7 +72,11 @@ em.ca       <- ef.out[,"Pelagia_TotalConsensus_TSS_EMmedian"] / 1000
 data <- data.frame(
   lon=x.ensmod.sp,
   lat=y.ensmod.sp,
-  prob=probability
+  prob=probability,
+  date=rep(paste(target_date, '00:00:00'), length(probability))
 )
 
-write.csv(data, file="Pelagia.NoctilucaEF.csv", row.names=FALSE)
+write.csv(data,
+  file=sprintf("./Projections/PelagiaNoctilucaEF-%s.csv", target_date),
+  row.names=FALSE
+)
