@@ -2,6 +2,7 @@ import os
 import importlib
 
 SETTINGS_MODULE = os.environ.get('JELLYRISK_SETTINGS_MODULE')
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 try:
     mod = importlib.import_module(SETTINGS_MODULE)
