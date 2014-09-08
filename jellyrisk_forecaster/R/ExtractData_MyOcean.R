@@ -25,11 +25,11 @@ imputeKNN <- function(raster_layer) {
 
 # load the data in raster layers
 
-rasterSalinity <- raster('MyOcean/myov04-med-ingv-sal-an-fc.nc')
+rasterSalinity <- raster('MyOcean/myov04-med-ingv-sal-an-fc.nc', level=1)
 rasterTemperature <- raster('MyOcean/myov04-med-ingv-tem-an-fc.nc', level=1)
-rasterNitrate <- raster('MyOcean/myov04-med-ogs-bio-an-fc.nc', varname='nit')
-rasterChlorofile <- raster('MyOcean/myov04-med-ogs-bio-an-fc.nc', varname='chl')
-rasterPhosphate <- raster('MyOcean/myov04-med-ogs-bio-an-fc.nc', varname='pho')
+rasterNitrate <- raster('MyOcean/myov04-med-ogs-bio-an-fc.nc', varname='nit', level=1)
+rasterChlorofile <- raster('MyOcean/myov04-med-ogs-bio-an-fc.nc', varname='chl', level=1)
+rasterPhosphate <- raster('MyOcean/myov04-med-ogs-bio-an-fc.nc', varname='pho', level=1)
 
 rasterSalinity.imputed <- imputeKNN(rasterSalinity)
 rasterTemperature.imputed <- imputeKNN(rasterTemperature)
@@ -52,10 +52,10 @@ phosphate.points <- extract(x=rasterPhosphate.imputed, y=xy, method="bilinear")
 data <- data.frame(
   lon = xy$lon[!is.na(salinity.points)],
   lat = xy$lat[!is.na(salinity.points)],
-  sal = salinity.points[!is.na(salinity.points)],
-  sstmean = temperature.points[!is.na(temperature.points)],
+  salinity = salinity.points[!is.na(salinity.points)],
+  temperature = temperature.points[!is.na(temperature.points)],
   nit = nitrate.points[!is.na(nitrate.points)],
-  chlomean = chlorofile.points[!is.na(chlorofile.points)],
+  chlorophile = chlorofile.points[!is.na(chlorofile.points)],
   pho = phosphate.points[!is.na(phosphate.points)]
 )
 

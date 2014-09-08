@@ -6,21 +6,21 @@
 
 library("biomod2")
 
-#Load the presence of the species
-DataSpecies <- read.table("Presence/Presences.csv", header=T, sep='\t')
+# Load the historical data
+historical_data <- read.table('historical-data-by-beach-2007-2010.csv', header=T)
 
-myRespName.pn <- "Pelagia.noctiluca"
+# Species names
+myRespName.pn <- c("Pelagia")
 
 # the presence/absences data for our species
-myResp.pn <- as.numeric(DataSpecies[,myRespName.pn])
+myResp.pn <- as.numeric(historical_data[,myRespName.pn])
 
 # the XY coordinates of species data
-myRespXY <- DataSpecies[,c("lon","lat")]
+myRespXY <- historical_data[,c("lon","lat")]
 
 # Environmental variables
-EnvVars <- read.table("BioOracle/Env.Points.Beaches.csv", header=T, sep='\t')
-explVars <- c("sal","sstmean","nit", "chlomean", "pho")
-myExpl <- EnvVars[, explVars]
+explVars <- c("temperature", "salinity", "chlorophile")  # c("sal","sstmean","nit", "chlomean", "pho")
+myExpl <- historical_data[, explVars] # data.frame(temperature=historical_data$temperature)
 
 # Formateando para Biomod
 myBiomodData.pn <- BIOMOD_FormatingData(resp.var = myResp.pn,
@@ -40,6 +40,8 @@ myBiomodOption <- BIOMOD_ModelingOptions()
 ### 3. Compute the models
 ###################################################
 
+# TSS = True Skill Statistic
+# http://www.esapubs.org/archive/appl/A021/062/appendix-B.htm
 myBiomodModelOut.pn <- BIOMOD_Modeling(myBiomodData.pn,
                         models = c("GLM", "GAM", "CTA","RF","MARS"),
                         models.options = myBiomodOption,
@@ -63,7 +65,7 @@ myBiomodEM.pn <- BIOMOD_EnsembleModeling(
                   chosen.models = 'all',
                   em.by='all',
                   eval.metric = c('TSS'),
-                  eval.metric.quality.threshold = c(0.5),
+                  eval.metric.quality.threshold = c(0.4),
                   prob.mean = T,
                   prob.cv = T,
                   prob.ci = T,
@@ -71,25 +73,25 @@ myBiomodEM.pn <- BIOMOD_EnsembleModeling(
                   prob.median = T,
                   committee.averaging = T,
                   prob.mean.weight = T,
-                  prob.mean.weight.decay = 'proportional' )
+                  prob.mean.weight.decay = 'proportional')
 
 
 ###################################################
 ### 5. Projection Over the Spanish Coast
 ###################################################
 
-#Load the new environmental data
+# Load the new environmental data
 Env.sp <- read.table("MyOcean/predictionData.csv", header=T, dec=".")
 
 # vuelvo a quitar lo NA's
-I1 <- is.na(Env.sp$lon) | is.na(Env.sp$lat) | is.na(Env.sp$sal) | is.na(Env.sp$sstmean) | is.na(Env.sp$nit) | is.na(Env.sp$chlomean) | is.na(Env.sp$pho)
+I1 <- is.na(Env.sp$lon) | is.na(Env.sp$lat) | is.na(Env.sp$sal) | is.na(Env.sp$temperature) | is.na(Env.sp$nit) | is.na(Env.sp$chlorophile) | is.na(Env.sp$pho)
 Env.sp <- Env.sp[!I1, ]
 
 # the XY coordinates of species data
 myRespXY.sp <- Env.sp[,c("lon","lat")]
 
 # Environmental variables
-myExpl.sp <- Env.sp[, explVars]
+myExpl.sp <- Env.sp[, explVars] # data.frame(temperature=Env.sp$temperature)
 
 myBiomodProj.sp.pn <- BIOMOD_Projection(
                         modeling.output = myBiomodModelOut.pn,
@@ -115,15 +117,15 @@ myBiomodEF.pn.sp <- BIOMOD_EnsembleForecasting(
                       binary.meth = 'TSS')
 
 #Cargamos las proyecciones
-p.nocti.ensfore.sp <- load('Pelagia.noctiluca/proj_Catalonia/proj_Catalonia_Pelagia.noctiluca_ensemble.RData')
+p.nocti.ensfore.sp <- load('Pelagia/proj_Catalonia/proj_Catalonia_Pelagia_ensemble.RData')
 
 x.ensmod.sp <- myRespXY.sp$lon
 y.ensmod.sp <- myRespXY.sp$lat
-z.ensmod.sp <- ef.out[,"Pelagia.noctiluca_TotalConsensus_TSS_EMmean"]
+z.ensmod.sp <- ef.out[,"Pelagia_TotalConsensus_TSS_EMmean"]
 probability <- z.ensmod.sp / 1000
-em.cv       <- ef.out[,"Pelagia.noctiluca_TotalConsensus_TSS_EMcv"]
-em.median   <- ef.out[,"Pelagia.noctiluca_TotalConsensus_TSS_EMmedian"] / 1000
-em.ca       <- ef.out[,"Pelagia.noctiluca_TotalConsensus_TSS_EMmedian"] / 1000
+em.cv       <- ef.out[,"Pelagia_TotalConsensus_TSS_EMcv"]
+em.median   <- ef.out[,"Pelagia_TotalConsensus_TSS_EMmedian"] / 1000
+em.ca       <- ef.out[,"Pelagia_TotalConsensus_TSS_EMmedian"] / 1000
 
 
 ###################################################
