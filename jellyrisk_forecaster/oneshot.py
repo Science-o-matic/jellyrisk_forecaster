@@ -12,14 +12,6 @@ from cartodb import CartoDBAPIKey, CartoDBException
 from jellyrisk_forecaster.config import settings
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-LIMIT_ROWS = getattr(settings, 'SETTINGS_LIMIT_ROWS', 15000)
-
-LONG_MIN = '-2'
-LONG_MAX = '4'
-LAT_MIN = '38'
-LAT_MAX = '44'
-DEPTH_MIN = '1.4721'
-DEPTH_MAX = '4.58748'
 
 
 def quote(value):
@@ -31,9 +23,9 @@ def download_myocean_data(service, product,
                           folder=None,
                           filename=None,
                           variables=None,
-                          long_min=LONG_MIN, long_max=LONG_MAX,
-                          lat_min=LAT_MIN, lat_max=LAT_MAX,
-                          depth_min=DEPTH_MIN, depth_max=DEPTH_MAX,
+                          long_min=settings.LONG_MIN, long_max=settings.LONG_MAX,
+                          lat_min=settings.LAT_MIN, lat_max=settings.LAT_MAX,
+                          depth_min=settings.DEPTH_MIN, depth_max=settings.DEPTH_MAX,
                           username=settings.MYOCEAN_USERNAME,
                           password=settings.MYOCEAN_PASSWORD):
     if folder is None:
@@ -145,7 +137,7 @@ def predict_forecast():
         call(["R", "--no-save"], stdin=inputfile)
 
 
-def construct_query(limit_rows=LIMIT_ROWS):
+def construct_query(limit_rows=settings.LIMIT_ROWS):
     values = []
 
     with open(os.path.join(settings.DATA_FOLDER, 'Pelagia.NoctilucaEF.csv'), 'r') as csvfile:
