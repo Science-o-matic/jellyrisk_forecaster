@@ -92,9 +92,9 @@ def download_forecast_data(start_date=None, end_date=None):
     # XXX: We can check if the data is already downloaded for desired day
     today = date.today()
     if start_date is None:
-        start = today + timedelta(days=1)  # data for tomorrow
+        start_date = today + timedelta(days=1)  # data for tomorrow
     if end_date is None:
-        end_date = start
+        end_date = start_date
 
     # chlorophile, nitrate, phosphate, oxygen...
     download_myocean_data(
@@ -117,31 +117,33 @@ def download_forecast_data(start_date=None, end_date=None):
         time_end='%s %s' % (end_date, '00:00:00'))
 
 
-# Preprocess historical data from MyOcean data using R
-
-def compile_historical_data():
+def preprocess_historical_data():
+    """Preprocess historical data from MyOcean data using R."""
     os.chdir(os.path.join(settings.DATA_FOLDER))
     with open(os.path.join(BASE_DIR, 'R', 'Compile_historical_data.R'), 'r') as inputfile:
         call(["R", "--no-save"], stdin=inputfile)
 
 
-# Preprocess forecast environmental data from MyOcean using R
-
-def extract_prediction_data():
+def preprocess_forecast_data():
+    """Preprocess forecast environmental data from MyOcean using R."""
     os.chdir(os.path.join(settings.DATA_FOLDER))
     with open(os.path.join(BASE_DIR, 'R', 'ExtractData_MyOcean.R'), 'r') as inputfile:
         call(["R", "--no-save"], stdin=inputfile)
 
 
-# Call R script
-
-def calibrate_predict():
+def calibrate_model():
+    """Calibrate model using historical data."""
     os.chdir(settings.DATA_FOLDER)
-    with open(os.path.join(BASE_DIR, 'R', 'Pnoctiuca_myocean_calibrate_predict.R'), 'r') as inputfile:
+    with open(os.path.join(BASE_DIR, 'R', 'Pnoctiluca_calibrate.R'), 'r') as inputfile:
         call(["R", "--no-save"], stdin=inputfile)
 
 
-# Open resulting CSV file and construct query
+def predict_forecast():
+    """Predict the presence of medusae using a previously calibrated model."""
+    os.chdir(settings.DATA_FOLDER)
+    with open(os.path.join(BASE_DIR, 'R', 'Pnoctiluca_predict.R'), 'r') as inputfile:
+        call(["R", "--no-save"], stdin=inputfile)
+
 
 def construct_query(limit_rows=LIMIT_ROWS):
     values = []
@@ -160,9 +162,8 @@ def construct_query(limit_rows=LIMIT_ROWS):
     return query
 
 
-# Connect to CartoDB and insert data
-
 def insert_data(query):
+    """Connect to CartoDB and insert the data contained in tye query."""
     cl = CartoDBAPIKey(settings.CARTODB_API_KEY, settings.CARTODB_DOMAIN)
 
     try:
@@ -172,22 +173,28 @@ def insert_data(query):
         raise
 
 
-def download_data():
+def calibrate():
     download_historical_data()
+    preprocess_historical_data()
+    calibrate_model()
+
+
+def predict():
     download_forecast_data()
+    preprocess_forecast_data()
+    predict_forecast()
 
 
-def preprocess_data():
-    compile_historical_data()
-    extract_prediction_data()
+def plot():
+    query = construct_query()
+    insert_data(query)
 
 
 def main():
-    download_data()
-    preprocess_data()
-    calibrate_predict()
-    query = construct_query()
-    insert_data(query)
+    calibrate()
+    predict()
+    plot()
+
 
 if __name__ == "__main__":
     main()
