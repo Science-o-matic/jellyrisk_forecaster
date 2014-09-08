@@ -28,10 +28,10 @@ imputeKNN <- function(raster_layer) {
 
 # brick with mean variables from may 2007 to october 2010, month by month
 # MEDSEA_REANALYSIS_PHYS_006_004
-brickTemperature <- brick('./MyOcean/myov04-med-ingv-tem-rean-mm_2007-2010.nc', level=1)
-brickSalinity <- brick('./MyOcean/myov04-med-ingv-sal-rean-mm_2007-2010.nc', level=1)
+brickTemperature <- brick('./MyOcean/Historical/myov04-med-ingv-tem-rean-mm_2007-2010.nc', level=1)
+brickSalinity <- brick('./MyOcean/Historical/myov04-med-ingv-sal-rean-mm_2007-2010.nc', level=1)
 # MEDSEA_REANALYSIS_BIO_006_007
-brickChlorophile <- brick('./MyOcean/myov04-med-ogs-bio-rean_2007-2010.nc', varname='chl', level=1)
+brickChlorophile <- brick('./MyOcean/Historical/myov04-med-ogs-bio-rean_2007-2010.nc', varname='chl', level=1)
 
 
 # table with equivalences between layer number, month and year in previous file
@@ -88,5 +88,5 @@ names(cum_pelagia_by_beach_month_year)[1] <- "beach"
 historical_data <- merge(envBeaches, merge(allVariables, cum_pelagia_by_beach_month_year))
 
 write.table(historical_data,
-            file="./historical-data-by-beach-2007-2010.csv",
+            file="./MyOcean/Historical/historical-data-by-beach-2007-2010.csv",
             row.names=FALSE, col.names=TRUE)

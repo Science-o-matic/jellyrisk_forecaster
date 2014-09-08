@@ -2,6 +2,8 @@ library(ncdf4)
 library(raster)
 library(FNN)
 
+target_date <- commandArgs(trailingOnly=TRUE)[1]
+
 imputeKNN <- function(raster_layer) {
     values <- getValues(raster_layer)
     xy <- xyFromCell(raster_layer, 1:ncell(raster_layer))
@@ -25,11 +27,24 @@ imputeKNN <- function(raster_layer) {
 
 # load the data in raster layers
 
-rasterSalinity <- raster('MyOcean/myov04-med-ingv-sal-an-fc.nc', level=1)
-rasterTemperature <- raster('MyOcean/myov04-med-ingv-tem-an-fc.nc', level=1)
-rasterNitrate <- raster('MyOcean/myov04-med-ogs-bio-an-fc.nc', varname='nit', level=1)
-rasterChlorofile <- raster('MyOcean/myov04-med-ogs-bio-an-fc.nc', varname='chl', level=1)
-rasterPhosphate <- raster('MyOcean/myov04-med-ogs-bio-an-fc.nc', varname='pho', level=1)
+rasterSalinity <- raster(
+  sprintf('./MyOcean/Forecast/myov04-med-ingv-sal-an-fc-%s.nc', target_date),
+  level=1)
+rasterTemperature <- raster(
+  sprintf('./MyOcean/Forecast/myov04-med-ingv-tem-an-fc-%s.nc', target_date),
+  level=1)
+rasterNitrate <- raster(
+  sprintf('./MyOcean/Forecast/myov04-med-ogs-bio-an-fc-%s.nc', target_date),
+  varname='nit',
+  level=1)
+rasterChlorofile <- raster(
+  sprintf('MyOcean/Forecast/myov04-med-ogs-bio-an-fc-%s.nc', target_date),
+  varname='chl',
+  level=1)
+rasterPhosphate <- raster(
+  sprintf('MyOcean/Forecast/myov04-med-ogs-bio-an-fc-%s.nc', target_date),
+  varname='pho',
+  level=1)
 
 rasterSalinity.imputed <- imputeKNN(rasterSalinity)
 rasterTemperature.imputed <- imputeKNN(rasterTemperature)
@@ -59,4 +74,7 @@ data <- data.frame(
   pho = phosphate.points[!is.na(phosphate.points)]
 )
 
-write.table(data, file="MyOcean/predictionData.csv", row.names=FALSE, col.names=TRUE)
+write.table(
+  data,
+  file=sprintf("./MyOcean/Forecast/Forecast_Env-%s.csv", target_date),
+  row.names=FALSE, col.names=TRUE)
