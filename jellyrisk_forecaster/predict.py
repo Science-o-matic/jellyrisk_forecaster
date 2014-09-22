@@ -91,16 +91,21 @@ def predict_forecast(target_date, force=False):
         print('\nFile %s already exists, skipping prediction... (use force=True to override).' % filename)
 
 
-def predict(days_ahead=2, force=False):
+def predict_ahead(days_ahead, force=False):
     today = date.today()
-    target_dates = [today + timedelta(days=days) for days in range(1, days_ahead + 1)]
+    target_dates = [today + timedelta(days=days) for days in
+                    range(1, days_ahead + 1)]
 
     for target_date in target_dates:
-        print("\n=== Predicting for date %s... ===" % target_date)
-        download_forecast_data(target_date, force)
-        preprocess_forecast_data(target_date, force)
-        predict_forecast(target_date, force)
+        predict(target_date)
+
+
+def predict(target_date, force=False):
+    print("\n=== Predicting for date %s... ===" % target_date)
+    download_forecast_data(target_date, force)
+    preprocess_forecast_data(target_date, force)
+    predict_forecast(target_date, force)
 
 
 if __name__ == "__main__":
-    predict()
+    predict_ahead(days_ahead=2)
