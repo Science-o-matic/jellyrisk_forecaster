@@ -11,8 +11,16 @@ def single_quote(value):
     return "'%s'" % value
 
 
-def truncate_table(table):
+def truncate_table(table=settings.CARTODB_TABLE):
     query = 'TRUNCATE %s' % table
+    cl = CartoDBAPIKey(settings.CARTODB_API_KEY, settings.CARTODB_DOMAIN)
+    cl.sql(query)
+
+
+def delete_for_date(target_date, table=settings.CARTODB_TABLE):
+    print("\n=== Deleting existing data for date %s... ===" % target_date)
+    date_formatted = target_date.strftime('%Y-%m-%d')
+    query = "DELETE FROM %s WHERE date='%s'" % (table, date_formatted)
     cl = CartoDBAPIKey(settings.CARTODB_API_KEY, settings.CARTODB_DOMAIN)
     cl.sql(query)
 
@@ -49,18 +57,23 @@ def insert_data(query):
         raise
 
 
-def plot(days_ahead=2, truncate=True):
-    if truncate:
-        truncate_table(settings.CARTODB_TABLE)
-
+def plot_ahead(days_ahead, delete_existing=True):
     today = date.today()
     target_dates = [today + timedelta(days=days) for days in range(1, days_ahead + 1)]
 
     for target_date in target_dates:
-        print("\n=== Plotting for date %s... ===" % target_date)
-        query = construct_query(target_date)
-        insert_data(query)
+        plot(target_date, delete_existing)
+
+
+def plot(target_date, delete_existing=True):
+    print("\n=== Plotting for date %s... ===" % target_date)
+
+    if delete_existing:
+        delete_for_date(target_date)
+
+    query = construct_query(target_date)
+    insert_data(query)
 
 
 if __name__ == "__main__":
-    plot()
+    plot_ahead(days_ahead=2)
