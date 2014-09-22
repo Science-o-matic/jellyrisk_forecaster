@@ -63,6 +63,8 @@ probability <- z.ensmod.sp / 1000
 em.cv       <- ef.out[,"Pelagia_TotalConsensus_TSS_EMcv"]
 em.median   <- ef.out[,"Pelagia_TotalConsensus_TSS_EMmedian"] / 1000
 em.ca       <- ef.out[,"Pelagia_TotalConsensus_TSS_EMmedian"] / 1000
+em.ciSup    <- ef.out[,'Pelagia_TotalConsensus_TSS_EMciSup']/ 1000
+em.ciInf    <- ef.out[,'Pelagia_TotalConsensus_TSS_EMciInf'] / 1000
 
 
 ###################################################
@@ -73,6 +75,8 @@ data <- data.frame(
   lon=x.ensmod.sp,
   lat=y.ensmod.sp,
   prob=probability,
+  probsup=em.ciSup,
+  probinf=em.ciInf,
   date=rep(paste(target_date, '00:00:00'), length(probability))
 )
 

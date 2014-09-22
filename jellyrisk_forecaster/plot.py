@@ -36,12 +36,15 @@ def construct_query(target_date, limit_rows=settings.LIMIT_ROWS):
             lon = row['lon']
             lat = row['lat']
             prob = row['prob']
+            probinf = row['probinf']
+            probsup = row['probsup']
             date = row['date']
-            the_geom = 'ST_SetSRID(ST_Point(%s, %s),4326)' % (lon, lat)
-            value = ', '.join([lon, lat, prob, single_quote(date), the_geom])
+            the_geom = 'ST_SetSRID(ST_Point(%s, %s), 4326)' % (lon, lat)
+            value = ', '.join([lon, lat, prob, probinf, probsup,
+                               single_quote(date), the_geom])
             values.append('(' + value + ')')
 
-    query = 'INSERT INTO %s (lon, lat, prob, date, the_geom) VALUES %s;'  \
+    query = 'INSERT INTO %s (lon, lat, prob, probinf, probsup, date, the_geom) VALUES %s;'  \
             % (settings.CARTODB_TABLE, ', '.join(values[:limit_rows]))
     return query
 
