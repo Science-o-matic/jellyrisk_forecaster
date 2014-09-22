@@ -19,7 +19,7 @@ myResp.pn <- as.numeric(historical_data[,myRespName.pn])
 myRespXY <- historical_data[,c("lon","lat")]
 
 # Environmental variables
-explVars <- c("temperature", "salinity", "chlorophile")  # c("sal","sstmean","nit", "chlomean", "pho")
+explVars <- c("temperature", "salinity", "chlorophile", "currx", "curry")  # c("sal","sstmean","nit", "chlomean", "pho")
 myExpl <- historical_data[, explVars] # data.frame(temperature=historical_data$temperature)
 
 # Formateando para Biomod

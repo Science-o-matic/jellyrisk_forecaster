@@ -23,6 +23,10 @@ def download_historical_data(force=False):
         {   # temperature
             'service': 'http://purl.org/myocean/ontology/service/database#MEDSEA_REANALYSIS_PHYS_006_004-TDS',
             'product': 'myov04-med-ingv-tem-rean-mm',
+        },
+        {   # ocean currents
+            'service': 'http://purl.org/myocean/ontology/service/database#MEDSEA_REANALYSIS_PHYS_006_004-TDS',
+            'product': 'myov04-med-ingv-cur-rean-mm',
         }
     ]
 
