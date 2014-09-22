@@ -22,7 +22,7 @@ def download_forecast_data(target_date, force=False):
         {   # chlorophile, nitrate, phosphate, oxygen...
             'service': 'http://purl.org/myocean/ontology/service/database#MEDSEA_ANALYSIS_FORECAST_BIO_006_006-TDS',
             'product': 'myov04-med-ogs-bio-an-fc',
-            'time': '12:00:00'
+            'time': '12:00:00',
         },
         {   # salinity
             'service': 'http://purl.org/myocean/ontology/service/database#MEDSEA_ANALYSIS_FORECAST_PHYS_006_001_a-TDS',
@@ -33,6 +33,12 @@ def download_forecast_data(target_date, force=False):
             'service': 'http://purl.org/myocean/ontology/service/database#MEDSEA_ANALYSIS_FORECAST_PHYS_006_001_a-TDS',
             'product': 'myov04-med-ingv-tem-an-fc',
             'time': '00:00:00'
+        },
+        {   # temperature
+            'service': 'http://purl.org/myocean/ontology/service/database#MEDSEA_ANALYSIS_FORECAST_PHYS_006_001_a-TDS',
+            'product': 'myov04-med-ingv-cur-an-fc',
+            'time': '00:00:00',
+            'variables': ['vozocrtx', 'vomecrty']
         }
     ]
 
@@ -42,6 +48,7 @@ def download_forecast_data(target_date, force=False):
             download_myocean_data(
                 service=dataset['service'],
                 product=dataset['product'],
+                variables=dataset.get('variables'),
                 time_start='%s %s' % (start_date, dataset['time']),
                 time_end='%s %s' % (end_date, dataset['time']),
                 folder=folder,

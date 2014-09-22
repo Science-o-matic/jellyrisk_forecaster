@@ -45,12 +45,22 @@ rasterPhosphate <- raster(
   sprintf('MyOcean/Forecast/myov04-med-ogs-bio-an-fc-%s.nc', target_date),
   varname='pho',
   level=1)
+rasterCurrX <- raster(
+  sprintf('MyOcean/Forecast/myov04-med-ingv-cur-an-fc-%s.nc', target_date),
+  varname='vozocrtx',
+  level=1)
+rasterCurrY <- raster(
+  sprintf('MyOcean/Forecast/myov04-med-ingv-cur-an-fc-%s.nc', target_date),
+  varname='vomecrty',
+  level=1)
 
 rasterSalinity.imputed <- imputeKNN(rasterSalinity)
 rasterTemperature.imputed <- imputeKNN(rasterTemperature)
 rasterNitrate.imputed <- imputeKNN(rasterNitrate)
 rasterChlorofile.imputed <- imputeKNN(rasterChlorofile)
 rasterPhosphate.imputed <- imputeKNN(rasterPhosphate)
+rasterCurrX.imputed <- imputeKNN(rasterCurrX)
+rasterCurrY.imputed <- imputeKNN(rasterCurrY)
 
 # read points where we want to interpolate the data (beaches)
 envBeaches <- read.table('Geo/beaches.txt', header=T)
@@ -62,6 +72,8 @@ temperature.points <- extract(x=rasterTemperature.imputed, y=xy, method="bilinea
 nitrate.points <- extract(x=rasterNitrate.imputed, y=xy, method="bilinear")
 chlorofile.points <- extract(x=rasterChlorofile.imputed, y=xy, method="bilinear")
 phosphate.points <- extract(x=rasterPhosphate.imputed, y=xy, method="bilinear")
+currx.points <- extract(x=rasterCurrX.imputed, y=xy, method="bilinear")
+curry.points <- extract(x=rasterCurrY.imputed, y=xy, method="bilinear")
 
 
 data <- data.frame(
@@ -71,7 +83,9 @@ data <- data.frame(
   temperature = temperature.points[!is.na(temperature.points)],
   nit = nitrate.points[!is.na(nitrate.points)],
   chlorophile = chlorofile.points[!is.na(chlorofile.points)],
-  pho = phosphate.points[!is.na(phosphate.points)]
+  pho = phosphate.points[!is.na(phosphate.points)],
+  currx = currx.points[!is.na(currx.points)],
+  curry = currx.points[!is.na(curry.points)]
 )
 
 write.table(
