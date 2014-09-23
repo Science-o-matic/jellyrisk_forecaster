@@ -1,7 +1,6 @@
 # Load raster brick of monthly mean temperatures from MyOcean from May 2007
 # to Oct 2010 and extract the values for each month at the selected beaches
 
-library(ncdf4)
 library(raster)
 library(FNN)
 

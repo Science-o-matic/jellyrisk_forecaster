@@ -1,4 +1,3 @@
-library(ncdf4)
 library(raster)
 library(FNN)
 
