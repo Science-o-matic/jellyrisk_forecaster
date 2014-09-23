@@ -2,7 +2,7 @@ import os
 from subprocess import call
 from datetime import date, timedelta
 
-from jellyrisk_forecaster.utils import exists, download_myocean_data
+from jellyrisk_forecaster.utils import exists, download_myocean_data, create_if_not_exists
 from jellyrisk_forecaster.config import settings, BASE_DIR
 
 DATE_FORMAT = '%Y-%m-%d'
@@ -17,6 +17,7 @@ def download_forecast_data(target_date, force=False):
     start_date = end_date = target_date
     target_date_formatted = start_date.strftime(DATE_FORMAT)
     folder = os.path.join(settings.DATA_FOLDER, 'MyOcean', 'Forecast')
+    create_if_not_exists(folder)
 
     datasets = [
         {   # chlorophile, nitrate, phosphate, oxygen...
@@ -64,6 +65,7 @@ def preprocess_forecast_data(target_date, force=False):
     """
     filename = 'Forecast_Env-%s.csv' % target_date.strftime(DATE_FORMAT)
     folder = os.path.join(settings.DATA_FOLDER, 'MyOcean', 'Forecast')
+    create_if_not_exists(folder)
 
     if not exists(filename, folder) or force:
         os.chdir(os.path.join(settings.DATA_FOLDER))
@@ -81,6 +83,7 @@ def predict_forecast(target_date, force=False):
     """
     filename = 'PelagiaNoctilucaEF-%s.csv' % target_date.strftime(DATE_FORMAT)
     folder = os.path.join(settings.DATA_FOLDER, 'Projections')
+    create_if_not_exists(folder)
 
     if not exists(filename, folder) or force:
         os.chdir(settings.DATA_FOLDER)

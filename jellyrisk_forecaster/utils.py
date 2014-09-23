@@ -9,6 +9,11 @@ def exists(filename, folder):
     return os.path.exists(os.path.join(folder, filename))
 
 
+def create_if_not_exists(folder):
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
+
 def download_myocean_data(service, product,
                           time_start, time_end,
                           folder=None,

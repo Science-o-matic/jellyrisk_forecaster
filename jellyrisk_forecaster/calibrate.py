@@ -2,7 +2,7 @@ import os
 from subprocess import call
 
 from jellyrisk_forecaster.utils import exists
-from jellyrisk_forecaster.utils import download_myocean_data
+from jellyrisk_forecaster.utils import download_myocean_data, create_if_not_exists
 from jellyrisk_forecaster.config import settings, BASE_DIR
 
 
@@ -10,6 +10,7 @@ def download_historical_data(force=False):
     time_start = '2007-05-01'
     time_end = '2010-09-01'
     folder = os.path.join(settings.DATA_FOLDER, 'MyOcean', 'Historical')
+    create_if_not_exists(folder)
 
     datasets = [
         {   # chlorophile, nitrate, phosphate, oxygen...
@@ -51,6 +52,7 @@ def preprocess_historical_data(force=False):
     """
     folder = os.path.join(settings.DATA_FOLDER, 'MyOcean', 'Historical')
     filename = 'historical-data-by-beach-2007-2010.csv'
+    create_if_not_exists(folder)
 
     if not exists(filename, folder) or force:
         os.chdir(os.path.join(settings.DATA_FOLDER))
