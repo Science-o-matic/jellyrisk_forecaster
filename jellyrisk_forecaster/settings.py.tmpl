@@ -1,0 +1,31 @@
+import os
+from datetime import timedelta
+
+# Celery
+BROKER_URL = 'redis://localhost//'
+CELERY_RESULT_BACKEND = 'redis://'
+
+CELERY_TASK_RESULT_EXPIRES = 3600
+CELERY_TIMEZONE = 'Europe/Madrid'
+
+CELERYBEAT_SCHEDULE = {
+    'oneshot-every-minute': {
+        'task': 'jellyrisk_forecaster.tasks.main',
+        'schedule': timedelta(minutes=1)
+    }
+}
+
+# CartoDB
+CARTODB_API_KEY = 'api-key-string'
+CARTODB_DOMAIN = 'username'
+CARTODB_TABLE = 'table_name_in_cartodb-to-plot-predictions'
+
+# Folders
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+
+DATA_FOLDER = os.path.join(BASE_DIR, 'data')
+
+MYOCEAN_USERNAME = 'myocean_username'
+MYOCEAN_PASSWORD = 'myocean_password'
+
+MOTU_CLIENT_PATH = 'full/path/to/motu-client.py'
