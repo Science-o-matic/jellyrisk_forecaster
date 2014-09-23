@@ -1,7 +1,7 @@
 import os
 import importlib
 
-SETTINGS_MODULE = os.environ.get('JELLYRISK_SETTINGS_MODULE')
+SETTINGS_MODULE = os.environ.get('JELLYRISK_SETTINGS_MODULE', 'settings')
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 try:
