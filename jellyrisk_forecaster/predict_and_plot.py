@@ -1,11 +1,8 @@
-"""
-Run an R script to calibrate and make predictions two days ahead, then upload
-the results to cartoDB.
-"""
+import sys
+from datetime import datetime
 
-from jellyrisk_forecaster.calibrate import calibrate
-from jellyrisk_forecaster.predict import predict, predict_ahead
-from jellyrisk_forecaster.plot import plot, plot_ahead
+from jellyrisk_forecaster.predict import predict
+from jellyrisk_forecaster.plot import plot
 
 
 def predict_and_plot(target_date, force=False, delete_existing=True):
@@ -20,11 +17,7 @@ def predict_and_plot(target_date, force=False, delete_existing=True):
     plot(target_date, delete_existing)
 
 
-def main():
-    calibrate()
-    predict_ahead(days_ahead=2)
-    plot_ahead(days_ahead=2)
-
-
 if __name__ == "__main__":
-    main()
+    date_string = sys.argv[1]
+    target_date = datetime.strptime(date_string, "%Y-%m-%d").date()
+    predict_and_plot(target_date)
