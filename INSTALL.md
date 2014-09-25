@@ -20,6 +20,9 @@ $ R
 > install.packages('FNN')
 > install.packages('raster')
 > install.packages('rgdal')
+> install.packages('nlme')
+> install.packages('Matrix')
+> install.packages('mgcv')
 
 Create a virtualenv, activate it and do:
 
