@@ -7,7 +7,7 @@
 library("biomod2")
 
 # Load the historical data
-historical_data <- read.table('./MyOcean/Historical/historical-data-by-beach-2007-2010.csv', header=T)
+historical_data <- read.table('./Environmental_and_Inspections_2010-2013.csv', header=T)
 
 # Species names
 myRespName.pn <- c("Pelagia")
@@ -19,7 +19,7 @@ myResp.pn <- as.numeric(historical_data[,myRespName.pn])
 myRespXY <- historical_data[,c("lon","lat")]
 
 # Environmental variables
-explVars <- c("temperature", "salinity", "chlorophile", "currx", "curry")  # c("sal","sstmean","nit", "chlomean", "pho")
+explVars <- c("votemper", "vosaline", "vozocrtx", "vomecrty")
 myExpl <- historical_data[, explVars] # data.frame(temperature=historical_data$temperature)
 
 # Formateando para Biomod
