@@ -152,7 +152,7 @@ def preprocess_historical_data(datasets, force=False):
     if not os.path.exists(out_path) or force:
         print('Creating %s...' % filename)
         with open(out_path, 'w') as out_file:
-            everything.to_csv(out_file, sep='\t', index=False)
+            everything.to_csv(out_file, sep='\t', na_rep='NA', index=False)
     else:
         print('\nFile %s already exists, skipping preprocessing... (use force=True to override).' % out_path)
 

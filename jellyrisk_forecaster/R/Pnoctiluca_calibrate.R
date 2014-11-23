@@ -10,13 +10,13 @@ library("biomod2")
 historical_data <- read.table('./Environmental_and_Inspections_2010-2013.csv', header=T)
 
 # Species names
-myRespName.pn <- c("Pelagia")
+myRespName.pn <- c("Pel")
 
 # the presence/absences data for our species
 myResp.pn <- as.numeric(historical_data[,myRespName.pn])
 
 # the XY coordinates of species data
-myRespXY <- historical_data[,c("lon","lat")]
+myRespXY <- historical_data[,c("Long","Lat")]
 
 # Environmental variables
 explVars <- c("votemper", "vosaline", "vozocrtx", "vomecrty")
