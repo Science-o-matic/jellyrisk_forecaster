@@ -13,6 +13,18 @@ Institute (ICM).
 Data processing and modelling is performed using R and the package biomod2. The rest of the
 system is written in Python.
 
+
+The detailed process is as follows:
+
+  - Download historical data from MyOcean using motu-client, restricting the area to the region containing the beaches of interest and minimal depth.
+  - Extract the value of each climatological variable at each beach, for all days, using R.
+  - Combine the values for all climatological variables, beaches and days in one single table.
+  - Add the historical Pelagia jellyfish presence. In our case this comes from the Institute of Marine Sciences.
+  - Use this historical table to train an ensemble of models using the R package biomod2.
+  - Download the forecast for climatological data for the area of interest from MyOcean using motu-client.
+  - Extract the climatological variables forecasting values for the beaches of interest.
+  - Apply the trained model to the new data to predict the presence of Pelagia jellyfish in a future day.
+
 Setup
 -----
 
