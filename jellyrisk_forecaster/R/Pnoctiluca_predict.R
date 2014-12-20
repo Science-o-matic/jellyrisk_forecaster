@@ -18,10 +18,6 @@ Env.sp <- read.table(
   header=T, dec="."
 )
 
-# vuelvo a quitar lo NA's
-I1 <- is.na(Env.sp$lon) | is.na(Env.sp$lat) | is.na(Env.sp$sal) | is.na(Env.sp$temperature) | is.na(Env.sp$nit) | is.na(Env.sp$chlorophile) | is.na(Env.sp$pho)
-Env.sp <- Env.sp[!I1, ]
-
 # the XY coordinates of species data
 myRespXY.sp <- Env.sp[,c("lon","lat")]
 
@@ -54,17 +50,17 @@ myBiomodEF.pn.sp <- BIOMOD_EnsembleForecasting(
 
 # Load projections from disk
 p.nocti.ensfore.sp <- load(
-  sprintf('Pelagia/proj_%s/proj_%s_Pelagia_ensemble.RData', proj.name, proj.name)
+  sprintf('Pel/proj_%s/proj_%s_Pel_ensemble.RData', proj.name, proj.name)
 )
 x.ensmod.sp <- myRespXY.sp$lon
 y.ensmod.sp <- myRespXY.sp$lat
-z.ensmod.sp <- ef.out[,"Pelagia_TotalConsensus_TSS_EMmean"]
+z.ensmod.sp <- ef.out[,"Pel_TotalConsensus_TSS_EMmean"]
 probability <- z.ensmod.sp / 1000
-em.cv       <- ef.out[,"Pelagia_TotalConsensus_TSS_EMcv"]
-em.median   <- ef.out[,"Pelagia_TotalConsensus_TSS_EMmedian"] / 1000
-em.ca       <- ef.out[,"Pelagia_TotalConsensus_TSS_EMmedian"] / 1000
-em.ciSup    <- ef.out[,'Pelagia_TotalConsensus_TSS_EMciSup']/ 1000
-em.ciInf    <- ef.out[,'Pelagia_TotalConsensus_TSS_EMciInf'] / 1000
+em.cv       <- ef.out[,"Pel_TotalConsensus_TSS_EMcv"]
+em.median   <- ef.out[,"Pel_TotalConsensus_TSS_EMmedian"] / 1000
+em.ca       <- ef.out[,"Pel_TotalConsensus_TSS_EMmedian"] / 1000
+em.ciSup    <- ef.out[,'Pel_TotalConsensus_TSS_EMciSup']/ 1000
+em.ciInf    <- ef.out[,'Pel_TotalConsensus_TSS_EMciInf'] / 1000
 
 
 ###################################################
