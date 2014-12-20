@@ -20,11 +20,6 @@ def download_forecast_data(target_date, force=False):
     create_if_not_exists(folder)
 
     datasets = [
-        {   # chlorophile, nitrate, phosphate, oxygen...
-            'service': 'http://purl.org/myocean/ontology/service/database#MEDSEA_ANALYSIS_FORECAST_BIO_006_006-TDS',
-            'product': 'myov04-med-ogs-bio-an-fc',
-            'time': '12:00:00',
-        },
         {   # salinity
             'service': 'http://purl.org/myocean/ontology/service/database#MEDSEA_ANALYSIS_FORECAST_PHYS_006_001_a-TDS',
             'product': 'myov04-med-ingv-sal-an-fc',
@@ -35,7 +30,7 @@ def download_forecast_data(target_date, force=False):
             'product': 'myov04-med-ingv-tem-an-fc',
             'time': '00:00:00'
         },
-        {   # temperature
+        {   # currents
             'service': 'http://purl.org/myocean/ontology/service/database#MEDSEA_ANALYSIS_FORECAST_PHYS_006_001_a-TDS',
             'product': 'myov04-med-ingv-cur-an-fc',
             'time': '00:00:00',
