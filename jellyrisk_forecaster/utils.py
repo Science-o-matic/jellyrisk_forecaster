@@ -1,5 +1,6 @@
 import os
-from subprocess import call
+import time
+from subprocess import check_call, CalledProcessError
 
 from jellyrisk_forecaster.config import settings
 
@@ -24,6 +25,7 @@ def download_myocean_data(service, product,
                           depth_min=settings.DEPTH_MIN, depth_max=settings.DEPTH_MAX,
                           username=settings.MYOCEAN_USERNAME,
                           password=settings.MYOCEAN_PASSWORD):
+
     if folder is None:
         folder = os.path.join(settings.DATA_FOLDER, 'MyOcean')
     if filename is None:
@@ -33,7 +35,7 @@ def download_myocean_data(service, product,
         settings.MOTU_CLIENT_PATH,
         '-u', settings.MYOCEAN_USERNAME,
         '-p', settings.MYOCEAN_PASSWORD,
-        '-m', 'http://gnoodap.bo.ingv.it/mis-gateway-servlet/Motu',
+        '-m', 'http://agnoodap.bo.ingv.it/mis-gateway-servlet/Motu',
         '-s', service, '-d', product,
         '-x', long_min, '-X', long_max,
         '-y', lat_min, '-Y', lat_max,
@@ -47,4 +49,17 @@ def download_myocean_data(service, product,
             call_stack.append('-v')
             call_stack.append(variable)
 
-    call(call_stack)
+    tries = 0
+    while(tries < settings.MOTU_CLIENT_RETRIES):
+        try:
+            check_call(call_stack)
+            break
+        except CalledProcessError:
+            tries += 1
+            time.sleep(settings.MOTU_CLIENT_RETRY_DELAY_SECS)
+
+    if tries == settings.MOTU_CLIENT_RETRIES:
+        message = "Maximun tries=%i exceeded trying to donwload %s!" % (
+                settings.MOTU_CLIENT_RETRIES, filename)
+        print message
+        raise Exception(message)
