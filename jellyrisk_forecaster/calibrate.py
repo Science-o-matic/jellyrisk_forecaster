@@ -144,13 +144,6 @@ def preprocess_historical_data(datasets, force=False):
     observations = [pd.read_csv(path, sep='\t') for path in paths]
     obs_concated = pd.concat(observations)
 
-    # Only consider 1 and 3 values as presence. 0 is too few jellyfishes.
-    jellyfishes = ['Pel', 'Aur', 'Cot', 'Rhi', 'Chr', 'Aeq', 'Vel', 'Phys']
-    for jellyfish in jellyfishes:
-        obs_concated.ix[obs_concated[jellyfish] == 1, jellyfish] = 0
-        obs_concated.ix[obs_concated[jellyfish] == 2, jellyfish] = 1
-        obs_concated.ix[obs_concated[jellyfish] == 3, jellyfish] = 1
-
     # merge environmental and inspection data
     everything = all_vars.merge(obs_concated)
     filename = 'Environmental_and_Inspections_2010-2013.csv'
