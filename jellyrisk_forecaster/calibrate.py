@@ -139,10 +139,21 @@ def preprocess_historical_data(datasets, force=False):
     all_vars = votemper.merge(vosaline.merge(vozocrtx.merge(vomecrty)))
 
     # concatenate temporarily all inspection data
-    fnames = ['SSS_2007-2010.csv', 'SSS_2011.csv', 'SSS_2012.csv', 'SSS_2013.csv']
+    fnames = [
+        'DB MODELO 2007.csv',
+        'DB MODELO 2008.csv',
+        'DB MODELO 2009.csv',
+        'DB MODELO 2010.csv',
+        'DB MODELO 2011.csv',
+        'DB MODELO 2012.csv',
+        'DB MODELO 2013.csv',
+    ]
     paths = [os.path.join(settings.DATA_FOLDER, 'DailyInspections', fname) for fname in fnames]
-    observations = [pd.read_csv(path, sep='\t') for path in paths]
+    observations = [pd.read_csv(path) for path in paths]
     obs_concated = pd.concat(observations)
+
+    # drop obs data since we will merge it again from MyOcean
+    obs_concated.drop(['votemper', 'vosaline', 'vozocrtx', 'vomecrty'], axis=1, inplace=True)
 
     # merge environmental and inspection data
     everything = all_vars.merge(obs_concated)
