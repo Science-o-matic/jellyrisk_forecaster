@@ -17,6 +17,7 @@ def create_if_not_exists(folder):
 
 def download_myocean_data(service, product,
                           time_start, time_end,
+                          module=None,
                           folder=None,
                           filename=None,
                           variables=None,
@@ -30,12 +31,14 @@ def download_myocean_data(service, product,
         folder = os.path.join(settings.DATA_FOLDER, 'MyOcean')
     if filename is None:
         filename = '%s.nc' % product
+    if module is None:
+        module = 'http://gnoodap.bo.ingv.it/mis-gateway-servlet/Motu'
 
     call_stack = [
         settings.MOTU_CLIENT_PATH,
         '-u', settings.MYOCEAN_USERNAME,
         '-p', settings.MYOCEAN_PASSWORD,
-        '-m', 'http://gnoodap.bo.ingv.it/mis-gateway-servlet/Motu',
+        '-m', module,
         '-s', service, '-d', product,
         '-x', long_min, '-X', long_max,
         '-y', lat_min, '-Y', lat_max,
@@ -63,3 +66,5 @@ def download_myocean_data(service, product,
                 settings.MOTU_CLIENT_RETRIES, filename)
         print message
         raise Exception(message)
+    print(call_stack)
+    call(call_stack)
