@@ -67,4 +67,3 @@ def download_myocean_data(service, product,
         print message
         raise Exception(message)
     print(call_stack)
-    call(call_stack)
