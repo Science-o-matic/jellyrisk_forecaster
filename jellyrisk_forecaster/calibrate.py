@@ -14,6 +14,20 @@ TIMES_END_MEDSEA_REAN_006_004 = ['2007-09-18', '2008-09-23', '2009-09-22',
 TIMES_START_MEDSEA_FOR_006_001 = ['2013-06-03']
 TIMES_END_MEDSEA_FOR_006_001 = ['2013-10-23']
 
+TIMES_OCEANCOLOUR_MED_CHL_073 = [
+    ('2007-05-23', '2007-09-18'),
+    ('2008-05-28', '2008-09-23'),
+    ('2009-05-16', '2009-09-22'),
+    ('2010-05-15', '2010-09-23'),
+    ('2011-06-01', '2011-10-01'),
+    ('2012-06-05', '2012-07-31'),
+]
+
+TIMES_OCEANCOLOUR_MED_CHL_040 = [
+    # ('2012-08-01', '2012-09-23'),
+    ('2013-06-03', '2013-10-23')
+]
+
 DATASETS = [
     # 2007-2012
     {
@@ -37,6 +51,22 @@ DATASETS = [
         'times_start': TIMES_START_MEDSEA_REAN_006_004,
         'times_end': TIMES_END_MEDSEA_REAN_006_004,
         'vars': ['vozocrtx', 'vomecrty']
+    },
+    {   # chlorophile 1
+        'service': 'http://purl.org/myocean/ontology/service/database#OCEANCOLOUR_MED_CHL_L3_REP_OBSERVATIONS_009_073-TDS',
+        'product': 'dataset-oc-med-chl-multi_cci-l3-chl_4km_daily-rep-v02',
+        'module': 'http://myocean.artov.isac.cnr.it/mis-gateway-servlet/Motu',
+        'times_start': [start for start, end in TIMES_OCEANCOLOUR_MED_CHL_073],
+        'times_end': [end for start, end in TIMES_OCEANCOLOUR_MED_CHL_073],
+        'vars': ['CHL']
+    },
+    {   # chlorophile 2
+        'service': 'http://purl.org/myocean/ontology/service/database#OCEANCOLOUR_MED_CHL_L3_NRT_OBSERVATIONS_009_040-TDS',
+        'product': 'dataset-oc-med-chl-modis_a-l3-chl12_1km_daily-rt-v02',
+        'module': 'http://myocean.artov.isac.cnr.it/mis-gateway-servlet/Motu',
+        'times_start': [start for start, end in TIMES_OCEANCOLOUR_MED_CHL_040],
+        'times_end': [end for start, end in TIMES_OCEANCOLOUR_MED_CHL_040],
+        'vars': ['CHL']
     },
     # 2013
     {   # salinity
@@ -81,6 +111,8 @@ def download_historical_data(datasets, force=False):
                 download_myocean_data(
                     service=dataset['service'],
                     product=dataset['product'],
+                    variables=dataset['vars'],
+                    module=dataset.get('module', None),
                     time_start=time_start,
                     time_end=time_end,
                     folder=folder,
@@ -99,6 +131,8 @@ def extract_historical_data(datasets, force=False):
 
     out_folder = os.path.join(settings.DATA_FOLDER, 'MyOcean', 'Historical', 'Preprocessed')
     create_if_not_exists(out_folder)
+
+    beaches_path = os.path.join(settings.DATA_FOLDER, 'Geo', 'beaches.txt')
 
     for dataset in DATASETS:
         for time_start, time_end in zip(dataset['times_start'], dataset['times_end']):
@@ -122,7 +156,7 @@ def extract_historical_data(datasets, force=False):
 
                     with open(os.path.join(BASE_DIR, 'R', 'Extract_historical_data.R'), 'r') as inputfile:
                         call(["R", "--no-save", "--args",
-                              time_start, time_end, nc_filepath, var, out_filepath],
+                              beaches_path, nc_filepath, var, out_filepath],
                              stdin=inputfile)
                 else:
                     print('\nFile %s already exists, skipping preprocessing... (use force=True to override).' % out_filename)
