@@ -29,6 +29,7 @@ TIMES_OCEANCOLOUR_MED_CHL_040 = [
 ]
 
 DATASETS = [
+    # PHYSICAL VARIABLES
     # 2007-2012
     {
         # salinity
@@ -52,22 +53,6 @@ DATASETS = [
         'times_end': TIMES_END_MEDSEA_REAN_006_004,
         'vars': ['vozocrtx', 'vomecrty']
     },
-    {   # chlorophile 1
-        'service': 'http://purl.org/myocean/ontology/service/database#OCEANCOLOUR_MED_CHL_L3_REP_OBSERVATIONS_009_073-TDS',
-        'product': 'dataset-oc-med-chl-multi_cci-l3-chl_4km_daily-rep-v02',
-        'module': 'http://myocean.artov.isac.cnr.it/mis-gateway-servlet/Motu',
-        'times_start': [start for start, end in TIMES_OCEANCOLOUR_MED_CHL_073],
-        'times_end': [end for start, end in TIMES_OCEANCOLOUR_MED_CHL_073],
-        'vars': ['CHL']
-    },
-    {   # chlorophile 2
-        'service': 'http://purl.org/myocean/ontology/service/database#OCEANCOLOUR_MED_CHL_L3_NRT_OBSERVATIONS_009_040-TDS',
-        'product': 'dataset-oc-med-chl-modis_a-l3-chl12_1km_daily-rt-v02',
-        'module': 'http://myocean.artov.isac.cnr.it/mis-gateway-servlet/Motu',
-        'times_start': [start for start, end in TIMES_OCEANCOLOUR_MED_CHL_040],
-        'times_end': [end for start, end in TIMES_OCEANCOLOUR_MED_CHL_040],
-        'vars': ['CHL']
-    },
     # 2013
     {   # salinity
         'service': 'http://purl.org/myocean/ontology/service/database#MEDSEA_ANALYSIS_FORECAST_PHYS_006_001_a-TDS',
@@ -90,6 +75,41 @@ DATASETS = [
         'times_end': TIMES_END_MEDSEA_FOR_006_001,
         'vars': ['vozocrtx', 'vomecrty']
     },
+
+    # BIOLOGICAL
+    {   # chlorophile 1
+        'service': 'http://purl.org/myocean/ontology/service/database#OCEANCOLOUR_MED_CHL_L3_REP_OBSERVATIONS_009_073-TDS',
+        'product': 'dataset-oc-med-chl-multi_cci-l3-chl_4km_daily-rep-v02',
+        'module': 'http://myocean.artov.isac.cnr.it/mis-gateway-servlet/Motu',
+        'times_start': [start for start, end in TIMES_OCEANCOLOUR_MED_CHL_073],
+        'times_end': [end for start, end in TIMES_OCEANCOLOUR_MED_CHL_073],
+        'vars': ['CHL']
+    },
+    {   # chlorophile 2
+        'service': 'http://purl.org/myocean/ontology/service/database#OCEANCOLOUR_MED_CHL_L3_NRT_OBSERVATIONS_009_040-TDS',
+        'product': 'dataset-oc-med-chl-modis_a-l3-chl12_1km_daily-rt-v02',
+        'module': 'http://myocean.artov.isac.cnr.it/mis-gateway-servlet/Motu',
+        'times_start': [start for start, end in TIMES_OCEANCOLOUR_MED_CHL_040],
+        'times_end': [end for start, end in TIMES_OCEANCOLOUR_MED_CHL_040],
+        'vars': ['CHL']
+    },
+    {   # MEDSEA_ANALYSIS_FORECAST_BIO_006_006
+        'service': 'http://purl.org/myocean/ontology/service/database#MEDSEA_ANALYSIS_FORECAST_BIO_006_006-TDS',
+        'product': 'myov04-med-ogs-bio-an-fc',
+        'module': 'http://gnoodap.bo.ingv.it/mis-gateway-servlet/Motu',
+        'times_start': ['2013-06-03'],
+        'times_end': ['2013-10-23'],
+        'vars': ['chl', 'nit', 'pcb', 'pho', 'dox', 'npp']
+    },
+    {   # MEDSEA_REANALYSIS_BIO_006_007
+        'service': 'http://purl.org/myocean/ontology/service/database#MEDSEA_REANALYSIS_BIO_006_007-TDS',
+        'product': 'myov04-med-ogs-bio-rean',
+        'module': 'http://gnoodap.bo.ingv.it/mis-gateway-servlet/Motu',
+        'times_start': ['2007-05-01', '2008-05-01', '2009-05-01', '2010-05-01'],
+        'times_end': ['2007-10-01', '2008-10-01', '2009-10-01', '2010-10-01'],
+        'vars': ['chl', 'nit', 'pcb', 'pho', 'dox', 'npp']
+    },
+
 ]
 
 
