@@ -27,10 +27,10 @@ imputeKNN <- function(raster_layer) {
 # load the data in raster layers
 
 rasterSalinity <- raster(
-  sprintf('./MyOcean/Forecast/myov05-med-ingv-sal-an-fc-%s-dm.nc', target_date),
+  sprintf('./MyOcean/Forecast/myov05-med-ingv-sal-an-fc-dm-%s.nc', target_date),
   level=1)
 rasterTemperature <- raster(
-  sprintf('./MyOcean/Forecast/myov05-med-ingv-tem-an-fc-%s-dm.nc', target_date),
+  sprintf('./MyOcean/Forecast/myov05-med-ingv-tem-an-fc-dm-%s.nc', target_date),
   level=1)
 rasterNitrate <- raster(
   sprintf('./MyOcean/Forecast/myov04-med-ogs-bio-an-fc-%s.nc', target_date),
@@ -45,11 +45,11 @@ rasterPhosphate <- raster(
   varname='pho',
   level=1)
 rasterCurrX <- raster(
-  sprintf('MyOcean/Forecast/myov05-med-ingv-cur-an-fc-%s-dm.nc', target_date),
+  sprintf('MyOcean/Forecast/myov05-med-ingv-cur-an-fc-dm-%s.nc', target_date),
   varname='vozocrtx',
   level=1)
 rasterCurrY <- raster(
-  sprintf('MyOcean/Forecast/myov05-med-ingv-cur-an-fc-%s-dm.nc', target_date),
+  sprintf('MyOcean/Forecast/myov05-med-ingv-cur-an-fc-dm-%s.nc', target_date),
   varname='vomecrty',
   level=1)
 
