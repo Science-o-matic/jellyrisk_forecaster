@@ -36,10 +36,11 @@ logging_config.dictConfig(
             'fromaddr': settings.EMAIL_HOST_USER,
             'toaddrs': settings.EMAIL_TO,
             'subject': "[jellyrisk_forecaster] error log",
+            'credentials': (settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
         },
     },
     'loggers': {
-        'predict': {
+        '': {
             'handlers': ['default', 'file', 'mail'],
             'level': 'DEBUG',
             'propagate': True
