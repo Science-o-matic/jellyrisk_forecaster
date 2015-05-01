@@ -8,11 +8,11 @@ env.roledefs = {
 
 @roles("guachiman")
 @task
-def release():
+def release(branch="master"):
     with cd("/home/jellyrisk/jellyrisk_forecaster"):
         run('git fetch --all')
-        run('git checkout master')
-        run('git reset --hard origin/master')
+        run('git checkout {}'.format(branch))
+        run('git reset --hard origin/{}'.format(branch))
 
 
 @roles("guachiman")
