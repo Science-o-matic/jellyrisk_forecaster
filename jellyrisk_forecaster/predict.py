@@ -1,11 +1,14 @@
 import os
 from subprocess import call
 from datetime import date, timedelta
+import logging
 
-from jellyrisk_forecaster.utils import exists, download_myocean_data, create_if_not_exists
+from jellyrisk_forecaster.utils import exists, download_myocean_data, create_if_not_exists, MaxTriesExceededException
 from jellyrisk_forecaster.config import settings, BASE_DIR
 
 DATE_FORMAT = '%Y-%m-%d'
+
+logger = logging.getLogger(__name__)
 
 
 def download_forecast_data(target_date, force=False):
@@ -46,14 +49,18 @@ def download_forecast_data(target_date, force=False):
     for dataset in datasets:
         filename = '%s-%s.nc' % (dataset['product'], target_date_formatted)
         if not exists(filename, folder) or force:
-            download_myocean_data(
-                service=dataset['service'],
-                product=dataset['product'],
-                variables=dataset.get('variables'),
-                time_start='%s %s' % (start_date, dataset['time']),
-                time_end='%s %s' % (end_date, dataset['time']),
-                folder=folder,
-                filename=filename)
+            try:
+                download_myocean_data(
+                    service=dataset['service'],
+                    product=dataset['product'],
+                    variables=dataset.get('variables'),
+                    time_start='%s %s' % (start_date, dataset['time']),
+                    time_end='%s %s' % (end_date, dataset['time']),
+                    folder=folder,
+                    filename=filename)
+            except MaxTriesExceededException:
+                logger.error("Download of file {} from MyOcean failed.".format(filename))
+
         else:
             print('File %s already exists, skipping download... (use force=True to override).' % filename)
 

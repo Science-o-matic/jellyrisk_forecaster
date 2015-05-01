@@ -15,6 +15,12 @@ CELERYBEAT_SCHEDULE = {
     }
 }
 
+# SMTP
+EMAIL_HOST = ''
+EMAIL_HOST_USER = ''
+EMAIL_TO = ()
+EMAIL_HOST_PASSWORD = ''
+
 # CartoDB
 CARTODB_API_KEY = 'api-key-string'
 CARTODB_DOMAIN = 'username'
@@ -29,3 +35,5 @@ MYOCEAN_USERNAME = 'myocean_username'
 MYOCEAN_PASSWORD = 'myocean_password'
 
 MOTU_CLIENT_PATH = 'full/path/to/motu-client.py'
+MOTU_CLIENT_RETRIES = 3
+MOTU_CLIENT_RETRY_DELAY_SECS = 5
