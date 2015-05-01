@@ -21,9 +21,11 @@ logging_config.dictConfig(
         'default': {
             'level':'INFO',
             'class':'logging.StreamHandler',
+            'formatter': 'standard',
         },
         'file': {
             'level':'DEBUG',
+            'formatter': 'standard',
             'class':'logging.handlers.TimedRotatingFileHandler',
             'filename': '../logs/jellyrisk_forecaster.log',
             'when': 'W0',
