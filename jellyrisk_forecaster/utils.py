@@ -5,6 +5,10 @@ from subprocess import check_call, CalledProcessError
 from jellyrisk_forecaster.config import settings
 
 
+class MaxTriesExceededException(BaseException):
+    pass
+
+
 def exists(filename, folder):
     """Return true if file with the given name exists in the folder."""
     return os.path.exists(os.path.join(folder, filename))
@@ -62,4 +66,4 @@ def download_myocean_data(service, product,
         message = "Maximun tries=%i exceeded trying to donwload %s!" % (
                 settings.MOTU_CLIENT_RETRIES, filename)
         print message
-        raise Exception(message)
+        raise MaxTriesExceededException(message)
