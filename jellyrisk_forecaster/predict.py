@@ -27,17 +27,17 @@ def download_forecast_data(target_date, force=False):
         },
         {   # salinity
             'service': 'http://purl.org/myocean/ontology/service/database#MEDSEA_ANALYSIS_FORECAST_PHYS_006_001_a-TDS',
-            'product': 'myov04-med-ingv-sal-an-fc',
+            'product': 'myov05-med-ingv-sal-an-fc-dm',
             'time': '00:00:00'
         },
         {   # temperature
             'service': 'http://purl.org/myocean/ontology/service/database#MEDSEA_ANALYSIS_FORECAST_PHYS_006_001_a-TDS',
-            'product': 'myov04-med-ingv-tem-an-fc',
+            'product': 'myov05-med-ingv-tem-an-fc-dm',
             'time': '00:00:00'
         },
         {   # temperature
             'service': 'http://purl.org/myocean/ontology/service/database#MEDSEA_ANALYSIS_FORECAST_PHYS_006_001_a-TDS',
-            'product': 'myov04-med-ingv-cur-an-fc',
+            'product': 'myov05-med-ingv-cur-an-fc-dm',
             'time': '00:00:00',
             'variables': ['vozocrtx', 'vomecrty']
         }
