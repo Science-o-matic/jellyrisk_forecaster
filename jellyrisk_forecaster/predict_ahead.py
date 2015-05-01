@@ -8,7 +8,6 @@ from jellyrisk_forecaster.predict import predict_ahead
 from jellyrisk_forecaster.plot import plot_ahead
 from jellyrisk_forecaster.config import settings
 
-
 logging_config.dictConfig(
 {
     'version': 1,
@@ -40,19 +39,15 @@ logging_config.dictConfig(
         },
     },
     'loggers': {
-        '': {
-            'handlers': ['default'],
-            'level': 'INFO',
+        'predict': {
+            'handlers': ['default', 'file', 'mail'],
+            'level': 'DEBUG',
             'propagate': True
-        },
-        'django.request': {
-            'handlers': ['default'],
-            'level': 'WARN',
-            'propagate': False
         },
     }
 }
 )
+
 
 def main():
     calibrate()
