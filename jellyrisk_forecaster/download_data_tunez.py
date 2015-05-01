@@ -8,21 +8,21 @@ TIME_END = ['2015-01-07']
 DATASETS = [
     {   # salinity
         'service': 'http://purl.org/myocean/ontology/service/database#MEDSEA_ANALYSIS_FORECAST_PHYS_006_001_a-TDS',
-        'product': 'myov04-med-ingv-sal-an-fc',
+        'product': 'myov05-med-ingv-sal-an-fc-dm',
         'times_start': TIME_START,
         'times_end': TIME_END,
         'vars': ['vosaline']
     },
     {   # temperature
         'service': 'http://purl.org/myocean/ontology/service/database#MEDSEA_ANALYSIS_FORECAST_PHYS_006_001_a-TDS',
-        'product': 'myov04-med-ingv-tem-an-fc',
+        'product': 'myov05-med-ingv-tem-an-fc-dm',
         'times_start': TIME_START,
         'times_end': TIME_END,
         'vars': ['votemper']
     },
     {   # ocean currents
         'service': 'http://purl.org/myocean/ontology/service/database#MEDSEA_ANALYSIS_FORECAST_PHYS_006_001_a-TDS',
-        'product': 'myov04-med-ingv-cur-an-fc',
+        'product': 'myov05-med-ingv-cur-an-fc-dm',
         'times_start': TIME_START,
         'times_end': TIME_END,
         'vars': ['vozocrtx', 'vomecrty']
