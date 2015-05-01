@@ -64,7 +64,7 @@ DATASETS = [
     # BIOLOGICAL
     {   # MEDSEA_REANALYSIS_BIO_006_008
         'service': 'http://purl.org/myocean/ontology/service/database#MEDSEA_REANALYSIS_BIO_006_008-TDS',
-        'product': 'myov04-med-ogs-bio-rean',
+        'product': 'myov05-med-ogs-bio-rean',
         'module': 'http://gnoodap.bo.ingv.it/mis-gateway-servlet/Motu',
         'times_start': TIMES_START_MEDSEA_REAN_006_004,
         'times_end': TIMES_END_MEDSEA_REAN_006_004,
