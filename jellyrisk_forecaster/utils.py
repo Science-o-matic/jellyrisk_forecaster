@@ -1,8 +1,8 @@
 import os
 import time
-from subprocess import check_call, CalledProcessError
+from subprocess import check_call, CalledProcessError, call
 
-from jellyrisk_forecaster.config import settings
+from jellyrisk_forecaster.config import settings, BASE_DIR
 
 
 def exists(filename, folder):
@@ -100,7 +100,7 @@ def extract_historical_data(datasets, beaches_path, in_folder, out_folder, prefi
     """
     create_if_not_exists(out_folder)
 
-    for dataset in DATASETS:
+    for dataset in datasets:
         for time_start, time_end in zip(dataset['times_start'], dataset['times_end']):
             nc_filename = '%(prefix)s%(product)s_%(time_start)s_%(time_end)s.nc' % \
                 {'prefix': prefix,

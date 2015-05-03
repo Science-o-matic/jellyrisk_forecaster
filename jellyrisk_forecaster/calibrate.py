@@ -3,7 +3,6 @@ from subprocess import call
 import pandas as pd
 
 from jellyrisk_forecaster import utils
-#from jellyrisk_forecaster.utils import exists, download_myocean_data, create_if_not_exists, nc_to_csv
 from jellyrisk_forecaster.config import settings, BASE_DIR
 
 
