@@ -83,3 +83,45 @@ def nc_to_csv(nc_filepath, out_filepath, beaches_path, var):
     with open(os.path.join(BASE_DIR, 'R', 'Extract_historical_data.R'), 'r') as inputfile:
         call(["R", "--no-save", "--args", beaches_path, nc_filepath, var, out_filepath],
              stdin=inputfile)
+
+
+def extract_historical_data(datasets, beaches_path, in_folder, out_folder, prefix='', force=False):
+    """
+    Extract variables values for all datasets and beaches, in CSV.
+
+    If the output file is already present and force is False, skip preprocessing.
+
+    - beaches_path: path to the csv file with the coordinates of the beaches
+      to extract the variable values for
+    - in_folder: folder where the netcdf files to extract are
+    - out_folder: folder where to place the csv files
+    - prefix: prefix for the netcdf and csv files
+    - force: if True, don't generate the csv file if it is already present
+    """
+    create_if_not_exists(out_folder)
+
+    for dataset in DATASETS:
+        for time_start, time_end in zip(dataset['times_start'], dataset['times_end']):
+            nc_filename = '%(prefix)s%(product)s_%(time_start)s_%(time_end)s.nc' % \
+                {'prefix': prefix,
+                 'product': dataset['product'],
+                 'time_start': time_start,
+                 'time_end': time_end}
+            nc_filepath = os.path.join(in_folder, nc_filename)
+
+            for var in dataset['vars']:
+                out_filename = '%(prefix)s%(product)s_%(time_start)s_%(time_end)s-%(var)s.csv' % \
+                    {'prefix': prefix,
+                     'product': dataset['product'],
+                     'time_start': time_start,
+                     'time_end': time_end,
+                     'var': var}
+
+                if not exists(out_filename, out_folder) or force:
+                    out_filepath = os.path.join(out_folder, out_filename)
+                    os.chdir(os.path.join(settings.DATA_FOLDER))
+                    print('Extracting to %s...' % out_filename)
+
+                    nc_to_csv(nc_filepath, out_filepath, beaches_path, var)
+                else:
+                    print('\nFile %s already exists, skipping preprocessing... (use force=True to override).' % out_filename)

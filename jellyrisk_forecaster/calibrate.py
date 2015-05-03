@@ -2,7 +2,8 @@ import os
 from subprocess import call
 import pandas as pd
 
-from jellyrisk_forecaster.utils import exists, download_myocean_data, create_if_not_exists, nc_to_csv
+from jellyrisk_forecaster import utils
+#from jellyrisk_forecaster.utils import exists, download_myocean_data, create_if_not_exists, nc_to_csv
 from jellyrisk_forecaster.config import settings, BASE_DIR
 
 
@@ -117,7 +118,7 @@ def download_historical_data(datasets, force=False):
     Download historical data from MyOcean using motu-client.
     """
     folder = os.path.join(settings.DATA_FOLDER, 'MyOcean', 'Historical')
-    create_if_not_exists(folder)
+    utils.create_if_not_exists(folder)
 
     for dataset in DATASETS:
         for time_start, time_end in zip(dataset['times_start'], dataset['times_end']):
@@ -125,9 +126,9 @@ def download_historical_data(datasets, force=False):
                 {'product': dataset['product'],
                  'time_start': time_start,
                  'time_end': time_end}
-            if not exists(filename, folder) or force:
+            if not utils.exists(filename, folder) or force:
                 print('Downloading %s...' % filename)
-                download_myocean_data(
+                utils.download_myocean_data(
                     service=dataset['service'],
                     product=dataset['product'],
                     variables=dataset['vars'],
@@ -138,44 +139,6 @@ def download_historical_data(datasets, force=False):
                     filename=filename)
             else:
                 print('File %s already exists, skipping download... (use force=True to override).' % filename)
-
-
-def extract_historical_data(datasets, force=False):
-    """
-    Extract variables values for all dates and beaches.
-
-    If the output file is already present and force is False, skip preprocessing.
-    """
-    nc_folder = os.path.join(settings.DATA_FOLDER, 'MyOcean', 'Historical')
-
-    out_folder = os.path.join(settings.DATA_FOLDER, 'MyOcean', 'Historical', 'Preprocessed')
-    create_if_not_exists(out_folder)
-
-    beaches_path = os.path.join(settings.DATA_FOLDER, 'Geo', 'beaches.txt')
-
-    for dataset in DATASETS:
-        for time_start, time_end in zip(dataset['times_start'], dataset['times_end']):
-            nc_filename = '%(product)s_%(time_start)s_%(time_end)s.nc' % \
-                {'product': dataset['product'],
-                 'time_start': time_start,
-                 'time_end': time_end}
-            nc_filepath = os.path.join(nc_folder, nc_filename)
-
-            for var in dataset['vars']:
-                out_filename = '%(product)s_%(time_start)s_%(time_end)s-%(var)s.csv' % \
-                    {'product': dataset['product'],
-                     'time_start': time_start,
-                     'time_end': time_end,
-                     'var': var}
-
-                if not exists(out_filename, out_folder) or force:
-                    out_filepath = os.path.join(out_folder, out_filename)
-                    os.chdir(os.path.join(settings.DATA_FOLDER))
-                    print('Extracting to %s...' % out_filename)
-
-                    nc_to_csv(nc_filepath, out_filepath, beaches_path, var)
-                else:
-                    print('\nFile %s already exists, skipping preprocessing... (use force=True to override).' % out_filename)
 
 
 def preprocess_historical_data(datasets, force=False):
@@ -243,7 +206,7 @@ def calibrate_model(force=False):
     folder = settings.DATA_FOLDER
     filename = 'Pnoctiluca_model.R'
 
-    if not exists(filename, folder) or force:
+    if not utils.exists(filename, folder) or force:
         os.chdir(settings.DATA_FOLDER)
         with open(os.path.join(BASE_DIR, 'R', 'Pnoctiluca_calibrate.R'), 'r') as inputfile:
             call(["R", "--no-save"], stdin=inputfile)
@@ -254,7 +217,11 @@ def calibrate_model(force=False):
 def calibrate(force=False):
     print("\n=== Calibrating model from historical data... ===")
     download_historical_data(DATASETS, force)
-    extract_historical_data(DATASETS, force)
+
+    beaches_path = os.path.join(settings.DATA_FOLDER, 'Geo', 'beaches.txt')
+    in_folder = os.path.join(settings.DATA_FOLDER, 'MyOcean', 'Historical')
+    out_folder = os.path.join(settings.DATA_FOLDER, 'MyOcean', 'Historical', 'Preprocessed')
+    utils.extract_historical_data(DATASETS, beaches_path, in_folder, out_folder, force)
     preprocess_historical_data(DATASETS, force)
     calibrate_model(force)
 
