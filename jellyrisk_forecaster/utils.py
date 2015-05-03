@@ -67,3 +67,19 @@ def download_myocean_data(service, product,
         print message
         raise Exception(message)
     print(call_stack)
+
+
+def nc_to_csv(nc_filepath, out_filepath, beaches_path, var):
+    """
+    Extract variable data in the netcdf file for the given beaches.
+
+    - nc_filepath: path to the netcdf file containing the variable data
+    - out_filepath: path to the csv file to write to (will be created if doesn't exist)
+    - beaches_path: path to the csv file with the coordinates of the beaches
+      to extract the variable values for
+    - var: name of the variable to extract the value for. Must coincide with
+      the name of the variable in the netcdf file.
+    """
+    with open(os.path.join(BASE_DIR, 'R', 'Extract_historical_data.R'), 'r') as inputfile:
+        call(["R", "--no-save", "--args", beaches_path, nc_filepath, var, out_filepath],
+             stdin=inputfile)

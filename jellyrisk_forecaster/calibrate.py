@@ -2,8 +2,7 @@ import os
 from subprocess import call
 import pandas as pd
 
-from jellyrisk_forecaster.utils import exists
-from jellyrisk_forecaster.utils import download_myocean_data, create_if_not_exists
+from jellyrisk_forecaster.utils import exists, download_myocean_data, create_if_not_exists, nc_to_csv
 from jellyrisk_forecaster.config import settings, BASE_DIR
 
 
@@ -174,10 +173,7 @@ def extract_historical_data(datasets, force=False):
                     os.chdir(os.path.join(settings.DATA_FOLDER))
                     print('Extracting to %s...' % out_filename)
 
-                    with open(os.path.join(BASE_DIR, 'R', 'Extract_historical_data.R'), 'r') as inputfile:
-                        call(["R", "--no-save", "--args",
-                              beaches_path, nc_filepath, var, out_filepath],
-                             stdin=inputfile)
+                    nc_to_csv(nc_filepath, out_filepath, beaches_path, var)
                 else:
                     print('\nFile %s already exists, skipping preprocessing... (use force=True to override).' % out_filename)
 
