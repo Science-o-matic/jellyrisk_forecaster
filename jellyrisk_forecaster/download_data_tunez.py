@@ -1,5 +1,5 @@
 import os
-from jellyrisk_forecaster.utils import download_myocean_data, exists, create_if_not_exists
+from jellyrisk_forecaster import utils
 from jellyrisk_forecaster.config import settings
 
 TIME_START = ['2013-01-01']
@@ -43,7 +43,7 @@ def download_historical_data(datasets, force=False):
     Download historical data from MyOcean using motu-client.
     """
     folder = os.path.join(settings.DATA_FOLDER, 'Tunez', 'Historical')
-    create_if_not_exists(folder)
+    utils.create_if_not_exists(folder)
 
     for dataset in DATASETS:
         for time_start, time_end in zip(dataset['times_start'], dataset['times_end']):
@@ -51,9 +51,9 @@ def download_historical_data(datasets, force=False):
                 {'product': dataset['product'],
                  'time_start': time_start,
                  'time_end': time_end}
-            if not exists(filename, folder) or force:
+            if not utils.exists(filename, folder) or force:
                 print('Downloading %s...' % filename)
-                download_myocean_data(
+                utils.download_myocean_data(
                     service=dataset['service'],
                     product=dataset['product'],
                     variables=dataset['vars'],
@@ -69,3 +69,8 @@ def download_historical_data(datasets, force=False):
 
 
 download_historical_data(DATASETS)
+
+beaches_path = os.path.join(settings.DATA_FOLDER, 'Tunez', 'Tunez_beaches.csv')
+in_folder = os.path.join(settings.DATA_FOLDER, 'Tunez', 'Historical')
+out_folder = os.path.join(settings.DATA_FOLDER, 'Tunez', 'Historical', 'Preprocessed')
+utils.extract_historical_data(DATASETS, beaches_path, in_folder, out_folder, prefix='tunez-')
