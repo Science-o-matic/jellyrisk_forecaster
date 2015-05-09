@@ -35,6 +35,16 @@ DATASETS = [
         'times_end': TIME_END,
         'vars': ['chl', 'nit', 'pcb', 'pho', 'dox', 'npp']
     },
+    {   # MEDSEA_ANALYSIS_FORECAST_BIO_006_006
+        'service': 'http://purl.org/myocean/ontology/service/database#WIND_GLO_WIND_L4_NRT_OBSERVATIONS_012_004',
+        'product': 'CERSAT-GLO-BLENDED_WIND_L4-V3-OBS_FULL_TIME_SERIE',
+        'module': 'http://www.ifremer.fr/mis-gateway-servlet/Motu',
+        'times_start': TIME_START,
+        'times_end': TIME_END,
+        'vars': ['eastward_wind', 'wind_speed', 'northward_wind'],
+        'depth_min': '10',
+        'depth_max': '10.0001'
+    },
 ]
 
 
@@ -62,6 +72,8 @@ def download_historical_data(datasets, force=False):
                     time_end=time_end,
                     long_min='9.8', long_max='10.9',
                     lat_min='35.7', lat_max='37.4',
+                    depth_min=dataset.get('depth_min', settings.DEPTH_MIN),
+                    depth_max=dataset.get('depth_max', settings.DEPTH_MAX),
                     folder=folder,
                     filename=filename)
             else:
