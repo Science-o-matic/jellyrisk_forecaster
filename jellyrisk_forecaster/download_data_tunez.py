@@ -3,7 +3,7 @@ from jellyrisk_forecaster import utils
 from jellyrisk_forecaster.config import settings
 
 TIME_START = ['2013-01-01']
-TIME_END = ['2015-01-07']
+TIME_END = ['2015-01-08']
 
 DATASETS = [
     {   # salinity
@@ -70,8 +70,8 @@ def download_historical_data(datasets, force=False):
                     module=dataset.get('module', None),
                     time_start=time_start,
                     time_end=time_end,
-                    long_min='9.8', long_max='10.9',
-                    lat_min='35.7', lat_max='37.4',
+                    long_min='8.8', long_max='11.9',
+                    lat_min='34.7', lat_max='38.4',
                     depth_min=dataset.get('depth_min', settings.DEPTH_MIN),
                     depth_max=dataset.get('depth_max', settings.DEPTH_MAX),
                     folder=folder,
