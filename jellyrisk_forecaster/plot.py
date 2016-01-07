@@ -62,7 +62,7 @@ def insert_data(query):
 
 def plot_ahead(days_ahead, delete_existing=True):
     today = date.today()
-    target_dates = [today + timedelta(days=days) for days in range(1, days_ahead + 1)]
+    target_dates = [today + timedelta(days=days) for days in range(0, days_ahead + 1)]
 
     for target_date in target_dates:
         plot(target_date, delete_existing)

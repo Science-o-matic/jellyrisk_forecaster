@@ -6,6 +6,7 @@ from logging import config as logging_config
 from jellyrisk_forecaster.calibrate import calibrate
 from jellyrisk_forecaster.predict import predict_ahead
 from jellyrisk_forecaster.plot import plot_ahead
+from jellyrisk_forecaster.plot_tmp import plot_ahead1
 from jellyrisk_forecaster.config import settings
 
 logging_config.dictConfig(
@@ -56,7 +57,7 @@ def main():
     calibrate()
     predict_ahead(days_ahead=2)
     plot_ahead(days_ahead=2)
-
+    plot_ahead1(days_ahead=2)
 
 if __name__ == "__main__":
     main()

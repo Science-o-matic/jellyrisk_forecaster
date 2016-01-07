@@ -104,7 +104,7 @@ def predict_forecast(target_date, force=False):
 def predict_ahead(days_ahead, force=False):
     today = date.today()
     target_dates = [today + timedelta(days=days) for days in
-                    range(1, days_ahead + 1)]
+                    range(0, days_ahead + 1)]
 
     for target_date in target_dates:
         predict(target_date)

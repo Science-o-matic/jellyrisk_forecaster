@@ -1,0 +1,4 @@
+2015-11-03 00:00:26,766 [ERROR] jellyrisk_forecaster.predict: Download of file myov04-med-ogs-bio-an-fc-2015-11-05.nc from MyOcean failed.
+2015-11-03 00:00:50,495 [ERROR] jellyrisk_forecaster.predict: Download of file myov05-med-ingv-sal-an-fc-dm-2015-11-05.nc from MyOcean failed.
+2015-11-03 00:01:13,775 [ERROR] jellyrisk_forecaster.predict: Download of file myov05-med-ingv-tem-an-fc-dm-2015-11-05.nc from MyOcean failed.
+2015-11-03 00:01:38,420 [ERROR] jellyrisk_forecaster.predict: Download of file myov05-med-ingv-cur-an-fc-dm-2015-11-05.nc from MyOcean failed.

@@ -46,7 +46,7 @@ allVariables <- data.frame()
 # read points where we want to interpolate the data (beaches)
 envBeaches <- read.table('Geo/beaches.txt', header=T)
 xy <- SpatialPoints(envBeaches[,c('lon', 'lat')])
-
+envBeaches
 for (i in 1:nlayers(brickTemperature)) {
   layer_temperature <- raster(brickTemperature, layer=i)
   layer_salinity <- raster(brickSalinity, layer=i)
