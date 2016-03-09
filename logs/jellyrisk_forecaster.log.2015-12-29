@@ -1,0 +1,2 @@
+2016-01-01 00:00:49,352 [ERROR] jellyrisk_forecaster.predict: Download of file myov05-med-ingv-cur-an-fc-dm-2016-01-03.nc from MyOcean failed.
+2016-01-02 00:01:25,716 [ERROR] jellyrisk_forecaster.predict: Download of file myov05-med-ingv-cur-an-fc-dm-2016-01-04.nc from MyOcean failed.
