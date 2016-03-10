@@ -5,7 +5,7 @@ In Ubuntu 10.04.4 LTS:
 
 Install system requirements:
 
-$ sudo apt-get install libgdal-dev libproj-dev
+$ sudo apt-get install libgdal-dev libproj-dev gfortran
 
 Add to /etc/apt/sources.list:
 
